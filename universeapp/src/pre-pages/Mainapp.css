@@ -1,0 +1,64 @@
+/* General Styles */
+.Main-app {
+  text-align: center;
+}
+
+/* Background and Header */
+.App-header {
+  background-color: rgba(
+    67,
+    64,
+    219,
+    0.68
+  ); /* Set background color with 68% opacity */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(14px + 1vw); /* Adjusted for a more normal size */
+  color: white;
+  position: relative;
+}
+
+/* Logo */
+.App-logo {
+  height: 20vmin; /* Adjusted to make logo smaller */
+  pointer-events: none;
+  z-index: 1; /* Place above the watermark */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+/* Name Text */
+.App-Name {
+  height: 10vmin;
+  pointer-events: none;
+  z-index: 1; /* Place above the watermark */
+  padding-top: 0px;
+}
+
+/* Welcome Text */
+.welcome {
+  text-align: center;
+  margin: 0 auto;
+  font-size: calc(14px + 0.5vw); /* Normalized font size */
+  line-height: 1.5;
+  color: #ffe900; /* Example color */
+  max-width: 90%;
+  z-index: 1; /* Place above the watermark */
+}
+
+/* Keyframes for Logo Animation */
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

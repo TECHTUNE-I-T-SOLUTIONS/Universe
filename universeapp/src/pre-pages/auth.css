@@ -1,0 +1,240 @@
+.auth-background {
+  background-color: rgba(
+    67,
+    64,
+    219,
+    0.68
+  ); /* Set background color with 68% opacity */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-logo {
+  height: 100px;
+  display: block; /* Ensures it behaves like a block-level element */
+  margin: 10px auto 0; /* Adds a small margin from the top */
+  animation: rotate 3s linear infinite; /* Adds a rotating animation */
+}
+
+.auth-name {
+  height: 40px; /* Adjusted for better alignment */
+  opacity: 0.8;
+  text-align: center; /* Centers the text horizontally */
+  margin-top: 5px; /* Minimal spacing below the logo */
+}
+
+/* Keyframes for the rotating animation */
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.auth-frame {
+  background: #4340db;
+  color: white;
+  padding: 20px 40px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+}
+
+
+/* Watermark */
+.auth-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../icons/UniVersetext.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+/* General Styles for Input Containers */
+.input-container {
+  position: relative;
+  margin-bottom: 20px;
+  width: 60%;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.input-container input:focus {
+  border-color: #007bff;
+}
+
+.input-container label {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #888;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.input-container input:focus + label,
+.input-container input:not(:placeholder-shown) + label {
+  top: -10px;
+  font-size: 12px;
+  color: #0e07e7;
+}
+
+@media (max-width: 768px) {
+  .input-container {
+    width: 100%;
+    padding: 0 10px;
+  }
+}
+
+/* Styles for Dialog Overlay */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Styles for Dialog Frame */
+.dialog-frame {
+  background: #4340db;
+  padding: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+}
+
+.dialog-frame h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #ffe900;
+}
+
+/* Styles for Dialog Buttons */
+.dialog-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.dialog-buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dialog-buttons button[type="submit"] {
+  background: #10398c;
+  color: #fff;
+}
+
+.dialog-buttons button[type="submit"]:hover {
+  background: #ffe900;
+  color: #10398c;
+}
+
+.dialog-buttons button[type="button"] {
+  background: #10398c;
+  color: #fff;
+}
+
+.dialog-buttons button[type="button"]:hover {
+  background: #ffe900;
+  color: #10398c;
+}
+
+/* Signup Button Styles */
+.signup-button {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.signup-button:hover {
+  background: #218838;
+}
+
+.signup-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.auth-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.auth-buttons button {
+  padding: 10px 10px;
+  background: #0e07e7;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dialog-title {
+  text-align: center; /* Center the text horizontally */
+  font-weight: bold; /* Make the text bold */
+  color: #10398c; /* Apply the specified color */
+  font-size: 1.5rem; /* Adjust the size for visibility */
+  margin-bottom: 20px; /* Add spacing below the title */
+}

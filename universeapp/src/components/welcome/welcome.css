@@ -1,0 +1,22 @@
+/* welcome.css */
+
+/* Media queries for responsiveness */
+@media (max-width: 1024px) {
+  .ml-64 {
+    margin-left: 0; /* Remove left margin on smaller screens */
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr); /* Change grid to 2 columns */
+  }
+
+  .fixed {
+    position: static; /* Make the header non-fixed on smaller screens */
+  }
+
+
+  .text-xl {
+    font-size: 1.25rem; /* Adjust font size for smaller screens */
+  }
+}
+
