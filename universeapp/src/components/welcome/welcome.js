@@ -200,8 +200,10 @@ const Welcome = () => {
         </nav>
 
         {/* Logout */}
-        <a href="#logout" onClick={handleLogout} className="flex items-center justify-center p-4 bg-gray-200 rounded hover:bg-blue-800 hover:text-white">
+        <a href="#logout" onClick={handleLogout} className="flex items-center justify-center p-4 bg-gray-200 rounded hover:bg-blue-800 hover:text-white"
+          title="log-out">
           <img src={log_out} alt="Logout" className="w-6 h-6 rounded-full mr-2" />
+
           {isSidebarOpen && <span>Logout</span>}
         </a>
       </aside>
@@ -255,11 +257,14 @@ const Welcome = () => {
                 <p className="text-sm text-white">Today is: {formatDate()}</p>
               </div>
               <div className="flex items-center space-x-4">
-                <button onClick={openSettingsPage} className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center">
+                <button onClick={openSettingsPage} className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center"
+                  title="Settings">
                   <img src={settings} alt="Settings" className="w-full h-full" />
                 </button>
-                <button onClick={openPersonalPage} className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center">
+                <button onClick={openPersonalPage} className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center"
+                title="Profile">
                   <img src={profile} alt="Profile" className="w-full h-full" />
+
                 </button>
               </div>
             </header>
