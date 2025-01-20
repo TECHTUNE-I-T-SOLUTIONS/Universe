@@ -5,8 +5,10 @@ import "./index.css";
 import Mainapp from "./pre-pages/Mainapp";
 import Auth from "./pre-pages/auth";
 import Welcome from "./components/welcome/welcome";
+import Admin from "./pre-pages/Admin";
 import reportWebVitals from "./reportWebVitals";
 import CopyrightIcon from "./icons/copyright.png"; // Import the icon
+
 
 const App = () => {
   const [showAuth, setShowAuth] = useState(false);
@@ -91,6 +93,8 @@ const Root = () => {
       <Route path="/" element={<App />} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/auth" element={<Auth onLoginSuccess={handleLoginSuccess} />} />
+      <Route path="/Admin" element={<Admin />} />
+      <Route path="/Admin-Dashboard" element={<AdminDashboard />} />
     </Routes>
   );
 };

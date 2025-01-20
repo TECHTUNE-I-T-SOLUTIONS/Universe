@@ -7,10 +7,10 @@ import student4 from "../icons/student4.jpg";
 import Nametext from "../icons/UniVersetext.svg";
 import logo from "../icons/UniVerselog.svg";
 
-const Signup = ({ onClose }) => {
+const Adminsignup = ({ onClose }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [email, setEmail] = useState("");
-  const [signupCode, setSignupCode] = useState("");
+  const [AdminsignupCode, setAdminsignupCode] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -35,7 +35,7 @@ const Signup = ({ onClose }) => {
     setTimeout(() => setAlertVisible(false), 3000);
   };
 
-  const handleSendSignupCode = () => {
+  const handleSendAdminsignupCode = () => {
     if (!email.endsWith("@unilorin.edu.ng")) {
       showAlert("Only university emails are allowed.😉", "error");
       return;
@@ -44,8 +44,8 @@ const Signup = ({ onClose }) => {
     setStep(2); // Move to the next step to show the signup code input
   };
 
-  const handleConfirmSignupCode = () => {
-    if (signupCode.trim() === "") {
+  const handleConfirmAdminsignupCode = () => {
+    if (AdminsignupCode.trim() === "") {
       showAlert("Please enter the signup code!😡", "error");
       return;
     }
@@ -53,7 +53,7 @@ const Signup = ({ onClose }) => {
     setStep(3); // Move to the next step to show the rest of the input fields
   };
 
-  const handleSignup = () => {
+  const handleAdminsignup = () => {
     if (password !== confirmPassword) {
       showAlert("Passwords do not match! Please, Check🙏", "error");
       return;
@@ -99,10 +99,10 @@ const Signup = ({ onClose }) => {
                 className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
               />
               <button
-                onClick={handleSendSignupCode}
+                onClick={handleSendAdminsignupCode}
                 className="w-full bg-green-700 font-bold text-white py-2 rounded hover:bg-black"
               >
-                Send Signup Code
+                Send Admin Signup Code
               </button>
             </>
           )}
@@ -111,16 +111,16 @@ const Signup = ({ onClose }) => {
             <>
               <input
                 type="text"
-                placeholder="Enter Signup Code"
-                value={signupCode}
-                onChange={(e) => setSignupCode(e.target.value)}
+                placeholder="Enter Admin Signup Code"
+                value={AdminsignupCode}
+                onChange={(e) => setAdminsignupCode(e.target.value)}
                 className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-red-600"
               />
               <button
-                onClick={handleConfirmSignupCode}
+                onClick={handleConfirmAdminsignupCode}
                 className="w-full bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600"
               >
-                Confirm Signup Code
+                Confirm Admin Signup Code
               </button>
             </>
           )}
@@ -136,23 +136,23 @@ const Signup = ({ onClose }) => {
               />
               <input
                 type="password"
-                placeholder="Password"
+                placeholder="Admin Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-green-600"
               />
               <input
                 type="password"
-                placeholder="Confirm Password"
+                placeholder="Confirm Admin Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-green-600"
               />
               <button
-                onClick={handleSignup}
+                onClick={handleAdminsignup}
                 className="w-full bg-green-500 font-bold text-white py-2 rounded hover:bg-green-600"
               >
-                Signup
+                Signup as Admin
               </button>
             </>
           )}
@@ -169,4 +169,4 @@ const Signup = ({ onClose }) => {
   );
 };
 
-export default Signup;
+export default Adminsignup;

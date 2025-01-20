@@ -8,20 +8,19 @@ import student3 from "../icons/student3.jpg";
 import student4 from "../icons/student4.jpg";
 import Nametext from "../icons/UniVersetext.svg";
 import logo from "../icons/UniVerselog.svg";
-import Forgot from "./forgot";
-import Signup from "./signup";
-import Admin from "./Admin";
+import AdminForgot from "./Adminforgot";
+import AdminSignup from "./Adminsignup";
+import Auth from "./auth";
 
-const Auth = ({ onLoginSuccess = () => {} }) => {
-  const [showForgot, setShowForgot] = useState(false);
-  const [showSignup, setShowSignup] = useState(false);
-  const [showAdmin, setShowAdmin] = useState(false); // Toggle between Admin and User Login
+const Admin = ({ onLoginSuccess = () => {} }) => {
+  const [showAdminForgot, setShowAdminForgot] = useState(false);
+  const [showAdminSignup, setShowAdminSignup] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
-  
 
   const images = [student1, student2, student3, student4];
 
@@ -39,24 +38,25 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
     setTimeout(() => setAlertVisible(false), 3000);
   };
 
-  const handleLogin = (email, password) => {
-    if (email.endsWith("@unilorin.edu.ng")) {
-      showAlert("Login Successful😍! Now, just wait❤️", "success");
-      // Trigger the login success handler
-      setTimeout(() => {
-        onLoginSuccess(); // Call the passed function to update the state in App component
-      }, 1000);
-    } else {
-      showAlert("Invalid Email🙂‍↔️. Use your university email😉!", "error");
-    }
+const handleLogin = (email, password) => {
+  if (email.endsWith("@unilorin.edu.ng")) {
+    showAlert("Admin Login Successful😍! Now, just wait❤️", "success");
+    // Trigger the login success handler
+    setTimeout(() => {
+      onLoginSuccess(); // Call the passed function to update the state in App component
+      navigate("/Admin-Dashboard"); //To Navigate to the AdminDashboard page
+    }, 1000);
+  } else {
+    showAlert("Invalid Email🙂‍↔️. Use your university email😉!", "error");
+  }
+};
+
+  const handleCloseAdminForgot = () => {
+    setShowAdminForgot(false); // Return to the login page
   };
 
-  const handleCloseForgot = () => {
-    setShowForgot(false); // Return to the login page
-  };
-
-  const handleCloseSignup = () => {
-    setShowSignup(false); // Return to the Login page
+  const handleCloseAdminSignup = () => {
+    setShowAdminSignup(false); // Return to the Login page
   };
 
 
@@ -74,8 +74,9 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
         </div>
       )}
 
-      {!showAdmin && !showForgot && !showSignup && (
+      {!showAdminForgot && !showAdminSignup && (
         <div className="flex justify-center items-center w-full">
+          {/* Add a wrapper div with padding and max-width */}
           <div className="w-full max-w-5xl p-3 sm:p-8 lg:p-3 bg-gray-50 shadow-lg rounded-lg">
             <div className="grid md:grid-cols-2 gap-6">
               {/* Animated Image Column */}
@@ -89,7 +90,7 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
                   className="absolute bottom-6 text-center text-lg font-sm text-yellow-500"
                   style={{ textShadow: "1px 1px 2px red" }}
                 >
-                  Welcome to UniVerse! <br /> Please login or signup to continue.
+                  Welcome to UniVerse, Admin! <br/> You can login or signup below.
                 </p>
               </div>
 
@@ -124,28 +125,28 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
                     type="submit"
                     className="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600"
                   >
-                    Login
+                    Admin Login
                   </button>
                 </form>
                 <p
-                  onClick={() => setShowForgot(true)}
+                  onClick={() => setShowAdminForgot(true)}
                   className="text-sm text-blue-500 hover:underline cursor-pointer mt-2"
                 >
                   Forgot Password?
                 </p>
                 <p
-                  onClick={() => setShowSignup(true)}
+                  onClick={() => setShowAdminSignup(true)}
                   className="text-sm text-gray-600 mt-4"
                 >
                   No account yet?{" "}
                   <span className="text-blue-500 hover:underline cursor-pointer">Sign up here</span>
                 </p>
-                <p
-                  onClick={() => navigate("/Admin")}
+                <p 
+                  onClick={() => navigate("/auth")}
                   className="text-sm text-gray-600 mt-4"
                 >
-                  Are you an Admin?{" "}
-                  <span className="text-blue-500 hover:underline cursor-pointer">Go Here</span>
+                  Are you an Student?{" "}
+                  <span className="text-blue-500 hover:underline cursor-pointer"> Go Here</span>
                 </p>
               </div>
             </div>
@@ -153,11 +154,11 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
         </div>
       )}
 
-      {showAdmin && <Admin onClose={() => setShowAdmin(false)} />}
-      {showForgot && <Forgot onClose={handleCloseForgot} showAlert={showAlert} />}
-      {showSignup && <Signup onClose={handleCloseSignup} showAlert={showAlert} />}
+      {showAdminForgot && <AdminForgot onClose={handleCloseAdminForgot} showAlert={showAlert} />}
+      {showAdminSignup && <AdminSignup onClose={handleCloseAdminSignup} showAlert={showAlert} />}
+      {showAuth && <Auth onClose={() => setShowAuth(false)} />}
     </div>
   );
 };
 
-export default Auth;
+export default Admin;
