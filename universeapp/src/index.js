@@ -8,7 +8,7 @@ import Welcome from "./components/welcome/welcome";
 import Admin from "./pre-pages/Admin";
 import reportWebVitals from "./reportWebVitals";
 import CopyrightIcon from "./icons/copyright.png"; // Import the icon
-
+import AdminDashboard from "./AdminDashboard/AdminDashboard";
 
 const App = () => {
   const [showAuth, setShowAuth] = useState(false);

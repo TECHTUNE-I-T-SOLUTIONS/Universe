@@ -79,20 +79,20 @@ const Forgot = ({ onClose }) => {
             placeholder="example@unilorin.edu.ng"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
+            className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring focus:ring-blue-300"
           />
           <button
             onClick={handleReset}
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+            className="w-full bg-blue-500 text-white py-2 rounded-full hover:bg-blue-600"
           >
-            Reset Password
+            Reset Student Password
           </button>
            {showForgot ? (
             <Forgot onClose={handleCloseForgot} />
             ) : (
           <button
             onClick={onClose}
-            className="w-full bg-gray-300 text-gray-800 py-2 rounded hover:bg-gray-400"
+            className="w-full bg-gray-300 text-gray-800 py-2 rounded-full hover:bg-gray-400"
           >
             Cancel
           </button>

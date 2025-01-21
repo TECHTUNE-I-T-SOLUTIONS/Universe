@@ -96,11 +96,11 @@ const Signup = ({ onClose }) => {
                 placeholder="example@unilorin.edu.ng"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
+                className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring focus:ring-blue-300"
               />
               <button
                 onClick={handleSendSignupCode}
-                className="w-full bg-green-700 font-bold text-white py-2 rounded hover:bg-black"
+                className="w-full bg-green-700 font-bold text-white py-2 rounded-full hover:bg-black"
               >
                 Send Signup Code
               </button>
@@ -114,11 +114,11 @@ const Signup = ({ onClose }) => {
                 placeholder="Enter Signup Code"
                 value={signupCode}
                 onChange={(e) => setSignupCode(e.target.value)}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-red-600"
+                className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring focus:ring-red-600"
               />
               <button
                 onClick={handleConfirmSignupCode}
-                className="w-full bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600"
+                className="w-full bg-blue-500 text-white font-bold py-2 rounded-full hover:bg-blue-600"
               >
                 Confirm Signup Code
               </button>
@@ -132,34 +132,34 @@ const Signup = ({ onClose }) => {
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-green-600"
+                className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring focus:ring-green-600"
               />
               <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-green-600"
+                className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring focus:ring-green-600"
               />
               <input
                 type="password"
                 placeholder="Confirm Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:ring-green-600"
+                className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring focus:ring-green-600"
               />
               <button
                 onClick={handleSignup}
-                className="w-full bg-green-500 font-bold text-white py-2 rounded hover:bg-green-600"
+                className="w-full bg-green-500 font-bold text-white py-2 rounded-full hover:bg-green-600"
               >
-                Signup
+                Student Signup
               </button>
             </>
           )}
 
           <button
             onClick={onClose}
-            className="w-full bg-red-600 font-bold text-white py-2 rounded hover:bg-black"
+            className="w-full bg-red-600 font-bold text-white py-2 rounded-full hover:bg-black"
           >
             Cancel
           </button>
