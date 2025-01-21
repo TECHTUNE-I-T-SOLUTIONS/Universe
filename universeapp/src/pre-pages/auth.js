@@ -110,21 +110,21 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
                     type="email"
                     name="email"
                     placeholder="example@unilorin.edu.ng"
-                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    className="w-full p-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300"
                     required
                   />
                   <input
                     type="password"
                     name="password"
                     placeholder="Password"
-                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    className="w-full p-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300"
                     required
                   />
                   <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600"
+                    className="w-full bg-blue-500 text-white font-bold py-3 rounded-full hover:bg-blue-600"
                   >
-                    Login
+                    Student Login
                   </button>
                 </form>
                 <p
