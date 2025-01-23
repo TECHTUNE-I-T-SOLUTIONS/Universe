@@ -1,0 +1,367 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import logo from "../icons/UniVerselog.svg";
+import Nametext from "../icons/UniVersetext.svg";
+import openSidebarIcon from "../icons/open_sidebar.png";
+import closeSidebarIcon from "../icons/close_sidebar.png";
+import settings from "../icons/settings.png";
+import profile from "../icons/profile.png";
+import log_out from "../icons/log-out.png";
+import Dashboard_icon from "../icons/Dashboard.png";
+import Analytics_icon from "../icons/Analytics.png";
+import Reports_icon from "../icons/Reports.png";
+import Management_icon from "../icons/Management.png";
+import User_Management from "../icons/User_Management.png";
+import Project_Management from "../icons/Project_Management.png";
+import Settings_icon from "../icons/Setings.png";
+import Profile_Settings from "../icons/Profile_Settings.png";
+import System_Settings from "../icons/System_Setings.png";
+
+const AdminDashboard = () => {
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [activePage, setActivePage] = useState(null);
+  const [showSubMenu, setShowSubMenu] = useState({});
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const navigate = useNavigate();
+
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+
+  const toggleSubMenu = (menuName) => {
+    setShowSubMenu((prev) => ({
+      ...prev,
+      [menuName]: !prev[menuName],
+    }));
+  };
+
+  const handleLogout = () => {
+    setShowLogoutDialog(true);
+  };
+
+  const confirmLogout = () => {
+    setShowLogoutDialog(false);
+    navigate("/Admin");
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutDialog(false);
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <aside
+        className={`${
+          isSidebarOpen ? "w-64" : "w-20"
+        } transition-width duration-300 bg-gray-300 text-black flex flex-col fixed top-0 left-0 h-full`}
+      >
+        {/* Sidebar Header */}
+        <div className="flex items-center justify-between p-4">
+          <div className="flex items-center space-x-4">
+            <img src={logo} alt="Logo" className="h-8" />
+            {isSidebarOpen && <img src={Nametext} alt="UniVerse" className="h-6" />}
+          </div>
+          <button onClick={toggleSidebar}>
+            <img
+              src={isSidebarOpen ? closeSidebarIcon : openSidebarIcon}
+              alt="Toggle Sidebar"
+              className="w-6 h-6"
+            />
+          </button>
+        </div>
+
+        {/* Sidebar Navigation */}
+        <nav className="flex-1 px-4 space-y-4">
+          {/* Dashboard */}
+          <div>
+            <button
+              onClick={() => toggleSubMenu("dashboard")}
+              className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-500 hover:text-white"
+              title="Dashboard"
+            >
+              <div className="flex items-center space-x-2">
+                <img
+                  src={Dashboard_icon}
+                  alt="Dashboard"
+                  className="w-6 h-6"
+                />
+                {isSidebarOpen && <span>Dashboard</span>}
+              </div>
+              {isSidebarOpen && <span>{showSubMenu.dashboard ? "-" : "+"}</span>}
+            </button>
+
+            {showSubMenu.dashboard && isSidebarOpen && (
+              <div className="pl-6 space-y-2">
+                <a
+                  href="#analytics"
+                  title="Analytics"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  <img src={Analytics_icon} alt="Analytics" className="w-5 h-5 inline-block mr-2" />
+                  {isSidebarOpen && "Analytics"}
+                </a>
+                <a
+                  href="#reports"
+                  title="Reports"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  <img src={Reports_icon} alt="Reports" className="w-5 h-5 inline-block mr-2" />
+                  {isSidebarOpen && "Reports"}
+                </a>
+              </div>
+            )}
+          </div>
+
+          {/* User Management */}
+          <div>
+            <button
+              onClick={() => toggleSubMenu("user_management")}
+              className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-500 hover:text-white"
+            >
+              <div className="flex items-center space-x-2">
+                <img
+                  src={User_Management}
+                  alt="User Management"
+                  className="w-6 h-6"
+                />
+                {isSidebarOpen && <span>User Management</span>}
+              </div>
+              {isSidebarOpen && <span>{showSubMenu.user_management ? "-" : "+"}</span>}
+            </button>
+            {showSubMenu.user_management && isSidebarOpen && (
+              <div className="pl-6 space-y-2">
+                <a
+                  href="#view_users"
+                  title="View Users"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  View All Users
+                </a>
+                <a
+                  href="#roles_permissions"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Manage Roles & Permissions
+                </a>
+                <a
+                  href="#reset_passwords"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Reset Passwords
+                </a>
+              </div>
+            )}
+          </div>
+
+          {/* Academic Management */}
+          <div>
+            <button
+              onClick={() => toggleSubMenu("academic_management")}
+              className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-500 hover:text-white"
+            >
+              <div className="flex items-center space-x-2">
+                <img
+                  src={Management_icon}
+                  alt="Academic Management"
+                  className="w-6 h-6"
+                />
+                {isSidebarOpen && <span>Academic Management</span>}
+              </div>
+              {isSidebarOpen && <span>{showSubMenu.academic_management ? "-" : "+"}</span>}
+            </button>
+            {showSubMenu.academic_management && isSidebarOpen && (
+              <div className="pl-6 space-y-2">
+                <a
+                  href="#assignments"
+                  title="Assignments"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Create/Manage Assignments
+                </a>
+                <a
+                  href="#exam_schedules"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Exam Schedules
+                </a>
+                <a
+                  href="#grade_analytics"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Grade Analytics
+                </a>
+                <a
+                  href="#student_performance"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Student Performance Reports
+                </a>
+              </div>
+            )}
+          </div>
+
+          {/* Content Moderation */}
+          <div>
+            <button
+              onClick={() => toggleSubMenu("content_moderation")}
+              className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-500 hover:text-white"
+            >
+              <div className="flex items-center space-x-2">
+                <img
+                  src={Management_icon}
+                  alt="Content Moderation"
+                  className="w-6 h-6"
+                />
+                {isSidebarOpen && <span>Content Moderation</span>}
+              </div>
+              {isSidebarOpen && <span>{showSubMenu.content_moderation ? "-" : "+"}</span>}
+            </button>
+            {showSubMenu.content_moderation && isSidebarOpen && (
+              <div className="pl-6 space-y-2">
+                <a
+                  href="#forum_posts"
+                  title="Forum Posts"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Forum Posts
+                </a>
+                <a
+                  href="#clubs_orgs"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Clubs & Organizations
+                </a>
+                <a
+                  href="#social_network"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Social Network Discussions
+                </a>
+              </div>
+            )}
+          </div>
+
+          {/* Event Management */}
+          <div>
+            <button
+              onClick={() => toggleSubMenu("event_management")}
+              className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-500 hover:text-white"
+            >
+              <div className="flex items-center space-x-2">
+                <img
+                  src={Management_icon}
+                  alt="Event Management"
+                  className="w-6 h-6"
+                />
+                {isSidebarOpen && <span>Event Management</span>}
+              </div>
+              {isSidebarOpen && <span>{showSubMenu.event_management ? "-" : "+"}</span>}
+            </button>
+            {showSubMenu.event_management && isSidebarOpen && (
+              <div className="pl-6 space-y-2">
+                <a
+                  href="#create_events"
+                  title="Create Events"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Create/Edit Events
+                </a>
+                <a
+                  href="#track_rsvps"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Track RSVPs
+                </a>
+                <a
+                  href="#volunteer_opportunities"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  Manage Volunteer Opportunities
+                </a>
+              </div>
+            )}
+          </div>
+
+          {/* Settings */}
+          <div>
+            <button
+              onClick={() => toggleSubMenu("settings")}
+              className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-500 hover:text-white"
+            >
+              <div className="flex items-center space-x-2">
+                <img
+                  src={Settings_icon}
+                  alt="Settings"
+                  className="w-6 h-6"
+                />
+                {isSidebarOpen && <span>Settings</span>}
+              </div>
+              {isSidebarOpen && <span>{showSubMenu.settings ? "-" : "+"}</span>}
+            </button>
+            {showSubMenu.settings && isSidebarOpen && (
+              <div className="pl-6 space-y-2">
+                <a
+                  href="#profile"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  <img src={Profile_Settings} alt="Profile Settings" className="w-5 h-5 inline-block mr-2" />
+                  {isSidebarOpen && "Profile Settings"}
+                </a>
+                <a
+                  href="#system"
+                  className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+                >
+                  <img src={System_Settings} alt="System Settings" className="w-5 h-5 inline-block mr-2" />
+                  {isSidebarOpen && "System Settings"}
+                </a>
+              </div>
+            )}
+          </div>
+        </nav>
+
+        {/* Logout */}
+        <a
+          href="#logout"
+          onClick={handleLogout}
+          className="flex items-center justify-center p-4 bg-gray-200 rounded hover:bg-gray-500 hover:text-white"
+          title="log-out"
+        >
+          <img src={log_out} alt="Logout" className="w-6 h-6 rounded-full mr-2" />
+          {isSidebarOpen && <span>Logout</span>}
+        </a>
+      </aside>
+
+      {/* Custom Logout Dialog */}
+      {showLogoutDialog && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-lg font-bold mb-4">Admin Logout Confirmation</h3>
+            <p>Are you sure you want to log out?</p>
+            <div className="flex justify-between mt-4">
+              <button onClick={cancelLogout} className="px-4 py-2 bg-gray-500 text-white rounded-lg">
+                Cancel
+              </button>
+              <button onClick={confirmLogout} className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <main
+        className={`flex-1 transition-all duration-300 ${isSidebarOpen ? "ml-64" : "ml-20"}`}
+      >
+        <header className="bg-gray-200 p-4 flex items-center justify-between">
+          <h1 className="text-xl font-bold">Welcome! Admin </h1>
+          <div className="flex space-x-4">
+            <img src={settings} alt="Settings" className="w-8 h-8 cursor-pointer" />
+            <img src={profile} alt="Profile" className="w-8 h-8 cursor-pointer" />
+          </div>
+        </header>
+      </main>
+    </div>
+  );
+};
+
+export default AdminDashboard;

@@ -123,7 +123,7 @@ const handleLogin = (email, password) => {
                   />
                   <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white font-bold py-3 rounded-full hover:bg-blue-600"
+                    className="w-full bg-blue-500 text-white font-bold py-3 rounded-full hover:bg-blue-900"
                   >
                     Admin Login
                   </button>
