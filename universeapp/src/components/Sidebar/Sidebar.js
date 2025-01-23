@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../icons/UniVerselog.svg";
 import Nametext from "../../icons/UniVersetext.svg";
+import Dashboard from "../../AdminDashboard/Dashboard/Dashboard";
+import UserManagement from "../../AdminDashboard/Management/User_Management";
+import Acad_Management from "../../AdminDashboard/Acad_Management/Acad_Management";
+import Content_Moderation from "../../AdminDashboard/Content_Moderation/Content_Moderation";
+import Event_Management from "../../AdminDashboard/Event_Management/Event_Management";
+import Settings from "../../AdminDashboard/Settings/Settings";
 import DashboardItem from "./DashboardItem";
 import UserManagementItem from "./UserManagementItem";
 import AcademicManagementItem from "./AcademicManagementItem";
@@ -61,49 +67,57 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
       </div>
 
       {/* Sidebar Items */}
-      <nav className="flex-1 px-4 space-y-4">
+      <nav className="flex-1 px-4 space-y-4 overflow-y-auto">
         <DashboardItem
           isSidebarOpen={isSidebarOpen}
           toggleSubMenu={toggleSubMenu}
+          href="#Dashboard"
           showSubMenu={showSubMenu}
         />
         <UserManagementItem
           isSidebarOpen={isSidebarOpen}
           toggleSubMenu={toggleSubMenu}
+          href="#UserManagement"
           showSubMenu={showSubMenu}
         />
         <AcademicManagementItem
           isSidebarOpen={isSidebarOpen}
           toggleSubMenu={toggleSubMenu}
+          href="#Acad_Management"
           showSubMenu={showSubMenu}
         />
         <ContentModerationItem
           isSidebarOpen={isSidebarOpen}
           toggleSubMenu={toggleSubMenu}
+          href="Content_Moderation"
           showSubMenu={showSubMenu}
         />
         <EventManagementItem
           isSidebarOpen={isSidebarOpen}
           toggleSubMenu={toggleSubMenu}
+          href="Event_Management"
           showSubMenu={showSubMenu}
         />
         <SettingsItem
           isSidebarOpen={isSidebarOpen}
           toggleSubMenu={toggleSubMenu}
+          href="Settings"
           showSubMenu={showSubMenu}
         />
       </nav>
 
-      {/* Logout */}
-      <a
-        href="#logout"
-        onClick={handleLogout}
-        className="flex items-center justify-center p-4 bg-gray-200 rounded hover:bg-gray-500 hover:text-white"
-        title="log-out"
-      >
-        <img src={log_out} alt="Logout" className="w-6 h-6 rounded-full mr-2" />
-        {isSidebarOpen && <span>Logout</span>}
-      </a>
+      {/* Logout Button */}
+      <div className="p-4 bg-gray-200 rounded hover:bg-gray-500 hover:text-white">
+        <a
+          href="#logout"
+          onClick={handleLogout}
+          className="flex items-center justify-center"
+          title="log-out"
+        >
+          <img src={log_out} alt="Logout" className="w-6 h-6 rounded-full mr-2" />
+          {isSidebarOpen && <span>Logout</span>}
+        </a>
+      </div>
 
       {showLogoutDialog && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
