@@ -2,27 +2,22 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../icons/UniVerselog.svg";
 import Nametext from "../../icons/UniVersetext.svg";
-import Dashboard from "../../AdminDashboard/Dashboard/Dashboard";
-import UserManagement from "../../AdminDashboard/Management/User_Management";
-import Acad_Management from "../../AdminDashboard/Acad_Management/Acad_Management";
-import Content_Moderation from "../../AdminDashboard/Content_Moderation/Content_Moderation";
-import Event_Management from "../../AdminDashboard/Event_Management/Event_Management";
-import Settings from "../../AdminDashboard/Settings/Settings";
+import openSidebarIcon from "../../icons/open_sidebar.png";
+import closeSidebarIcon from "../../icons/close_sidebar.png";
+import log_out from "../../icons/log-out.png"; // Ensure you import the logout icon
+
+// Import Sidebar Items
 import DashboardItem from "./DashboardItem";
 import UserManagementItem from "./UserManagementItem";
 import AcademicManagementItem from "./AcademicManagementItem";
 import ContentModerationItem from "./ContentModerationItem";
 import EventManagementItem from "./EventManagementItem";
 import SettingsItem from "./SettingsItem";
-import openSidebarIcon from "../../icons/open_sidebar.png";
-import closeSidebarIcon from "../../icons/close_sidebar.png";
-import log_out from "../../icons/log-out.png"; // Ensure you import the logout icon
 
 const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   const [showSubMenu, setShowSubMenu] = useState({});
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const navigate = useNavigate();
-  
 
   const toggleSubMenu = (menuName) => {
     setShowSubMenu((prev) => ({
@@ -45,6 +40,16 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
     setShowLogoutDialog(false);
   };
 
+  const handleItemClick = (href, menuName) => {
+    if (isSidebarOpen) {
+      // Open submenu when sidebar is expanded
+      toggleSubMenu(menuName);
+    } else {
+      // Navigate to the respective page when sidebar is collapsed
+      navigate(href);
+    }
+  };
+
   return (
     <aside
       className={`${
@@ -54,8 +59,14 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
       {/* Sidebar Header */}
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center space-x-4">
-          <img src={logo} alt="Logo" className="h-[5vmin] pointer-events-none z-10 animate-spin-slow" />
-          {isSidebarOpen && <img src={Nametext} alt="UniVerse" className="h-6" />}
+          <img
+            src={logo}
+            alt="Logo"
+            className="h-[5vmin] pointer-events-none z-10 animate-spin-slow"
+          />
+          {isSidebarOpen && (
+            <img src={Nametext} alt="UniVerse" className="h-6" />
+          )}
         </div>
         <button onClick={toggleSidebar}>
           <img
@@ -70,38 +81,44 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
       <nav className="flex-1 px-4 space-y-4 overflow-y-auto">
         <DashboardItem
           isSidebarOpen={isSidebarOpen}
+          onClick={() => handleItemClick("/Dashboard", "Dashboard")}
           toggleSubMenu={toggleSubMenu}
-          href="#Dashboard"
           showSubMenu={showSubMenu}
         />
         <UserManagementItem
           isSidebarOpen={isSidebarOpen}
+          onClick={() => handleItemClick("/UserManagement", "UserManagement")}
           toggleSubMenu={toggleSubMenu}
-          href="#UserManagement"
           showSubMenu={showSubMenu}
         />
         <AcademicManagementItem
           isSidebarOpen={isSidebarOpen}
+          onClick={() =>
+            handleItemClick("/Acad_Management", "AcademicManagement")
+          }
           toggleSubMenu={toggleSubMenu}
-          href="#Acad_Management"
           showSubMenu={showSubMenu}
         />
         <ContentModerationItem
           isSidebarOpen={isSidebarOpen}
+          onClick={() =>
+            handleItemClick("/Content_Moderation", "ContentModeration")
+          }
           toggleSubMenu={toggleSubMenu}
-          href="Content_Moderation"
           showSubMenu={showSubMenu}
         />
         <EventManagementItem
           isSidebarOpen={isSidebarOpen}
+          onClick={() =>
+            handleItemClick("/Event_Management", "EventManagement")
+          }
           toggleSubMenu={toggleSubMenu}
-          href="Event_Management"
           showSubMenu={showSubMenu}
         />
         <SettingsItem
           isSidebarOpen={isSidebarOpen}
+          onClick={() => handleItemClick("/Settings", "Settings")}
           toggleSubMenu={toggleSubMenu}
-          href="Settings"
           showSubMenu={showSubMenu}
         />
       </nav>
@@ -119,6 +136,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
         </a>
       </div>
 
+      {/* Logout Confirmation Dialog */}
       {showLogoutDialog && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg">

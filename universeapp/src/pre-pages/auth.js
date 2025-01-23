@@ -64,7 +64,7 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
     <div className="flex items-center justify-center min-h-screen bg-white">
       {alertVisible && (
         <div
-          className={`fixed top-4 right-4 z-[9999] border-l-4 p-4 rounded-lg shadow-lg ${
+          className={`fixed top-4 right-4 z-[9999] border-l-2 p-2 rounded-lg shadow-lg ${
             alertType === "success"
               ? "bg-green-100 border-green-500 text-green-800"
               : "bg-red-100 border-red-500 text-red-800"
