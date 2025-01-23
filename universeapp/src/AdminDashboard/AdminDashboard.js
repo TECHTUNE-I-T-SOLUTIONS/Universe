@@ -1,52 +1,42 @@
 import React, { useState } from "react";
-import settings from "../icons/settings.png";
-import profile from "../icons/profile.png";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar";
+import AdminMainContent from "./Admin_Main_Content/AdminMainContent";
+import UserManagement from "../AdminDashboard/Management/User_Management";
+import AcademicManagement from "../AdminDashboard/Acad_Management/Acad_Management";
+import ContentModeration from "../AdminDashboard/Content_Moderation/Content_Moderation";
+import EventManagement from "../AdminDashboard/Event_Management/Event_Management";
+import Settings from "./Settings/Settings";
 
 const AdminDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const navigate = useNavigate();
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
-
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        onNavigate={(path) => navigate(path)} // Pass navigation handler to Sidebar
+      />
 
       {/* Main Content */}
       <main
-        className={`flex-1 transition-all duration-300 ${isSidebarOpen ? "ml-64" : "ml-20"}`}
+        className={`flex-1 transition-all duration-300 ${
+          isSidebarOpen ? "ml-64" : "ml-20"
+        }`}
       >
-        {/* Header Section */}
-        <header className="bg-gray-200 p-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold">Welcome! Admin</h1>
-          <div className="flex space-x-4">
-            <img src={settings} alt="Settings" className="w-8 h-8 cursor-pointer" />
-            <img src={profile} alt="Profile" className="w-8 h-8 cursor-pointer" />
-          </div>
-        </header>
-
-        {/* Rules Section */}
-        <section className="p-6 bg-white shadow-md rounded-lg m-4">
-          <h2 className="text-lg font-semibold mb-4">Admin Responsibilities</h2>
-          <ul className="list-disc list-inside space-y-2">
-            <li className="text-gray-700">
-              Ensure all student details are kept confidential and secure.
-            </li>
-            <li className="text-gray-700">
-              Avoid actions or decisions that may create conflicts in the students' section.
-            </li>
-            <li className="text-gray-700">
-              Regularly monitor and update system data to maintain accuracy and reliability.
-            </li>
-            <li className="text-gray-700">
-              Uphold ethical standards and act in the best interest of the institution.
-            </li>
-            <li className="text-gray-700">
-              Address student and staff concerns promptly and professionally.
-            </li>
-          </ul>
-        </section>
+        <Routes>
+          <Route path="/" element={<AdminMainContent />} />
+          <Route path="/Dashboard" element={<AdminMainContent />} />
+          <Route path="/UserManagement" element={<UserManagement />} />
+          <Route path="/Acad_Management" element={<AcademicManagement />} />
+          <Route path="/Content_Moderation" element={<ContentModeration />} />
+          <Route path="/Event_Management" element={<EventManagement />} />
+          <Route path="/Settings" element={<Settings />} />
+        </Routes>
       </main>
     </div>
   );
