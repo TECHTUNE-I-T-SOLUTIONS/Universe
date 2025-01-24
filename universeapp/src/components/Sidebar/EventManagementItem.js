@@ -8,7 +8,9 @@ const EventManagementItem = ({ isSidebarOpen, showSubMenu, toggleSubMenu }) => (
       className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-500 hover:text-white"
     >
       <div className="flex items-center space-x-2">
-        <img src={Event_Management} alt="Event Management" className="w-6 h-6" />
+        <img src={Event_Management} alt="Event Management" className="w-6 h-6"
+          title="Event Management"
+        />
         {isSidebarOpen && <span>Event Management</span>}
       </div>
       {isSidebarOpen && <span>{showSubMenu.event_management ? "-" : "+"}</span>}
@@ -24,12 +26,14 @@ const EventManagementItem = ({ isSidebarOpen, showSubMenu, toggleSubMenu }) => (
         </a>
         <a
           href="#track_rsvps"
+          title="Track RSVPs"
           className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
         >
           Track RSVPs
         </a>
         <a
           href="#volunteer_opportunities"
+          title="Volunteer Opportunities"
           className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
         >
           Manage Volunteer Opportunities

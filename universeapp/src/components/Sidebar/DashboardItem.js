@@ -8,9 +8,10 @@ const DashboardItem = ({ isSidebarOpen, toggleSubMenu, showSubMenu }) => (
     <button
       onClick={() => toggleSubMenu("dashboard")}
       className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-500 hover:text-white"
+      href="#Dashboard"
     >
       <div className="flex items-center space-x-2">
-        <img src={DashboardIcon} alt="Dashboard" className="w-6 h-6" />
+        <img src={DashboardIcon} alt="Dashboard" className="w-6 h-6" title="Dashboard"  />
         {isSidebarOpen && <span>Dashboard</span>}
       </div>
       {isSidebarOpen && <span>{showSubMenu.dashboard ? "-" : "+"}</span>}
@@ -21,6 +22,7 @@ const DashboardItem = ({ isSidebarOpen, toggleSubMenu, showSubMenu }) => (
         <a
           href="#analytics"
           className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+          title="Analytics"
         >
           <img src={AnalyticsIcon} alt="Analytics" className="w-5 h-5 inline-block mr-2" />
           Analytics
@@ -28,6 +30,7 @@ const DashboardItem = ({ isSidebarOpen, toggleSubMenu, showSubMenu }) => (
         <a
           href="#reports"
           className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+          title="Reports"
         >
           <img src={ReportsIcon} alt="Reports" className="w-5 h-5 inline-block mr-2" />
           Reports

@@ -8,7 +8,9 @@ const UserManagementItem = ({ isSidebarOpen, showSubMenu, toggleSubMenu }) => (
       className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-500 hover:text-white"
     >
       <div className="flex items-center space-x-2">
-        <img src={User_Management} alt="User Management" className="w-6 h-6" />
+        <img src={User_Management} alt="User Management" className="w-6 h-6"
+          title="User Management"
+        />
         {isSidebarOpen && <span>User Management</span>}
       </div>
       {isSidebarOpen && <span>{showSubMenu.user_management ? "-" : "+"}</span>}
@@ -25,11 +27,13 @@ const UserManagementItem = ({ isSidebarOpen, showSubMenu, toggleSubMenu }) => (
         <a
           href="#roles_permissions"
           className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
+          title="Roles and Permissions"
         >
           Manage Roles & Permissions
         </a>
         <a
           href="#reset_passwords"
+          title="Reset Passwords"
           className="block p-2 text-sm rounded hover:bg-gray-500 hover:text-white"
         >
           Reset Passwords
