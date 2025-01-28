@@ -1,25 +1,47 @@
 import React, { useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar";
+
+// Import all the components/pages to be displayed
 import AdminMainContent from "./Admin_Main_Content/AdminMainContent";
-import UserManagement from "../AdminDashboard/Management/User_Management";
-import AcademicManagement from "../AdminDashboard/Acad_Management/Acad_Management";
-import ContentModeration from "../AdminDashboard/Content_Moderation/Content_Moderation";
-import EventManagement from "../AdminDashboard/Event_Management/Event_Management";
+import Dashboard from "./Dashboard/Dashboard";
+import UserManagement from "./Management/User_Management";
+import AcademicManagement from "./Acad_Management/Acad_Management";
+import ContentModeration from "./Content_Moderation/Content_Moderation";
+import EventManagement from "./Event_Management/Event_Management";
 import Settings from "./Settings/Settings";
 
 const AdminDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const navigate = useNavigate();
+  const [activePage, setActivePage] = useState("AdminMainContent"); // Track active page
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
+  const renderActivePage = () => {
+    switch (activePage) {
+      case "Dashboard":
+        return <Dashboard />;
+      case "UserManagement":
+        return <UserManagement />;
+      case "AcademicManagement":
+        return <AcademicManagement />;
+      case "ContentModeration":
+        return <ContentModeration />;
+      case "EventManagement":
+        return <EventManagement />;
+      case "Settings":
+        return <Settings />;
+      default:
+        return <AdminMainContent />;
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
-        onNavigate={(path) => navigate(path)} // Pass navigation handler to Sidebar
+        setActivePage={setActivePage} // Pass setActivePage to Sidebar
       />
 
       {/* Main Content */}
@@ -28,15 +50,7 @@ const AdminDashboard = () => {
           isSidebarOpen ? "ml-64" : "ml-20"
         }`}
       >
-        <Routes>
-          <Route path="/" element={<AdminMainContent />} />
-          <Route path="/Dashboard" element={<AdminMainContent />} />
-          <Route path="/UserManagement" element={<UserManagement />} />
-          <Route path="/Acad_Management" element={<AcademicManagement />} />
-          <Route path="/Content_Moderation" element={<ContentModeration />} />
-          <Route path="/Event_Management" element={<EventManagement />} />
-          <Route path="/Settings" element={<Settings />} />
-        </Routes>
+        <div className="h-full overflow-y-auto p-4">{renderActivePage()}</div>
       </main>
     </div>
   );

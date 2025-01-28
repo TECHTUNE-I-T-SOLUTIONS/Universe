@@ -1,30 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import logo from "../../icons/UniVerselog.svg";
 import Nametext from "../../icons/UniVersetext.svg";
 import openSidebarIcon from "../../icons/open_sidebar.png";
 import closeSidebarIcon from "../../icons/close_sidebar.png";
-import log_out from "../../icons/log-out.png"; // Ensure you import the logout icon
+import log_out from "../../icons/log-out.png";
 
-// Import Sidebar Items
-import DashboardItem from "./DashboardItem";
-import UserManagementItem from "./UserManagementItem";
-import AcademicManagementItem from "./AcademicManagementItem";
-import ContentModerationItem from "./ContentModerationItem";
-import EventManagementItem from "./EventManagementItem";
-import SettingsItem from "./SettingsItem";
-
-const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
-  const [showSubMenu, setShowSubMenu] = useState({});
+const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  const navigate = useNavigate();
-
-  const toggleSubMenu = (menuName) => {
-    setShowSubMenu((prev) => ({
-      ...prev,
-      [menuName]: !prev[menuName],
-    }));
-  };
 
   const handleLogout = () => {
     setShowLogoutDialog(true);
@@ -32,22 +14,12 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
 
   const confirmLogout = () => {
     setShowLogoutDialog(false);
-    navigate("/Admin");
     console.log("Logout confirmed");
+    // Perform actual logout logic here
   };
 
   const cancelLogout = () => {
     setShowLogoutDialog(false);
-  };
-
-  const handleItemClick = (href, menuName) => {
-    if (isSidebarOpen) {
-      // Open submenu when sidebar is expanded
-      toggleSubMenu(menuName);
-    } else {
-      // Navigate to the respective page when sidebar is collapsed
-      navigate(href);
-    }
   };
 
   return (
@@ -59,14 +31,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
       {/* Sidebar Header */}
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center space-x-4">
-          <img
-            src={logo}
-            alt="Logo"
-            className="h-[5vmin] pointer-events-none z-10 animate-spin-slow"
-          />
-          {isSidebarOpen && (
-            <img src={Nametext} alt="UniVerse" className="h-6" />
-          )}
+          <img src={logo} alt="Logo" className="h-[5vmin]" />
+          {isSidebarOpen && <img src={Nametext} alt="UniVerse" className="h-6" />}
         </div>
         <button onClick={toggleSidebar}>
           <img
@@ -79,61 +45,54 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
 
       {/* Sidebar Items */}
       <nav className="flex-1 px-4 space-y-4 overflow-y-auto">
-        <DashboardItem
-          isSidebarOpen={isSidebarOpen}
-          onClick={() => handleItemClick("/Dashboard", "Dashboard")}
-          toggleSubMenu={toggleSubMenu}
-          showSubMenu={showSubMenu}
-        />
-        <UserManagementItem
-          isSidebarOpen={isSidebarOpen}
-          onClick={() => handleItemClick("/UserManagement", "UserManagement")}
-          toggleSubMenu={toggleSubMenu}
-          showSubMenu={showSubMenu}
-        />
-        <AcademicManagementItem
-          isSidebarOpen={isSidebarOpen}
-          onClick={() =>
-            handleItemClick("/Acad_Management", "AcademicManagement")
-          }
-          toggleSubMenu={toggleSubMenu}
-          showSubMenu={showSubMenu}
-        />
-        <ContentModerationItem
-          isSidebarOpen={isSidebarOpen}
-          onClick={() =>
-            handleItemClick("/Content_Moderation", "ContentModeration")
-          }
-          toggleSubMenu={toggleSubMenu}
-          showSubMenu={showSubMenu}
-        />
-        <EventManagementItem
-          isSidebarOpen={isSidebarOpen}
-          onClick={() =>
-            handleItemClick("/Event_Management", "EventManagement")
-          }
-          toggleSubMenu={toggleSubMenu}
-          showSubMenu={showSubMenu}
-        />
-        <SettingsItem
-          isSidebarOpen={isSidebarOpen}
-          onClick={() => handleItemClick("/Settings", "Settings")}
-          toggleSubMenu={toggleSubMenu}
-          showSubMenu={showSubMenu}
-        />
+        <button
+          onClick={() => setActivePage("Dashboard")}
+          className="w-full text-left p-2 hover:bg-gray-200"
+        >
+          Dashboard
+        </button>
+        <button
+          onClick={() => setActivePage("UserManagement")}
+          className="w-full text-left p-2 hover:bg-gray-200"
+        >
+          User Management
+        </button>
+        <button
+          onClick={() => setActivePage("AcademicManagement")}
+          className="w-full text-left p-2 hover:bg-gray-200"
+        >
+          Academic Management
+        </button>
+        <button
+          onClick={() => setActivePage("ContentModeration")}
+          className="w-full text-left p-2 hover:bg-gray-200"
+        >
+          Content Moderation
+        </button>
+        <button
+          onClick={() => setActivePage("EventManagement")}
+          className="w-full text-left p-2 hover:bg-gray-200"
+        >
+          Event Management
+        </button>
+        <button
+          onClick={() => setActivePage("Settings")}
+          className="w-full text-left p-2 hover:bg-gray-200"
+        >
+          Settings
+        </button>
       </nav>
 
       {/* Logout Button */}
       <div className="p-4 bg-gray-200 rounded hover:bg-gray-500 hover:text-white">
-        <a
-          href="#logout"
+        <button
           onClick={handleLogout}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center w-full"
           title="log-out"
         >
           <img src={log_out} alt="Logout" className="w-6 h-6 rounded-full mr-2" />
           {isSidebarOpen && <span>Logout</span>}
-        </a>
+        </button>
       </div>
 
       {/* Logout Confirmation Dialog */}

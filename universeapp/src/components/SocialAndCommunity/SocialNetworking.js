@@ -49,8 +49,8 @@ const SocialNetworking = () => {
                     key={idx}
                     className={`mb-2 p-2 rounded-lg max-w-xs ${
                       msg.sender === "You"
-                        ? "ml-auto bg-green-200 text-right"
-                        : "mr-auto bg-gray-200 text-left"
+                        ? "ml-auto w-60 bg-blue-300 text-right"
+                        : "mr-auto w-60 bg-blue-300 text-left"
                     }`}
                   >
                     <strong>{msg.sender}:</strong>

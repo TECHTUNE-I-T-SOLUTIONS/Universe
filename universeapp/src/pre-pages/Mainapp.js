@@ -20,8 +20,7 @@ function App() {
           />
         </p>
         <p className="text-center mx-auto text-[calc(14px+0.5vw)] leading-6 text-blue-500 max-w-[90%] z-10">
-          Welcome to UniVerse! <br />
-          ...Your ultimate student companion!
+          <br/> Your ultimate student companion!
         </p>
       </header>
     </div>
