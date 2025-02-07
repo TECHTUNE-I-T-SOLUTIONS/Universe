@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 import logo from "../../icons/UniVerselog.svg";
 import Nametext from "../../icons/UniVersetext.svg";
 import openSidebarIcon from "../../icons/open_sidebar.png";
@@ -14,14 +15,22 @@ import settingsIcon from "../../icons/Setings.png";
 const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
+  const navigate = useNavigate(); // Hook for redirection
+
   const handleLogout = () => {
     setShowLogoutDialog(true);
   };
 
   const confirmLogout = () => {
-    setShowLogoutDialog(false);
-    console.log("Logout confirmed");
-    // Perform actual logout logic here
+    console.log("Logout confirmed, redirecting...");
+    localStorage.removeItem("adminToken");
+    sessionStorage.removeItem("adminSession");
+    setShowLogoutDialog(false); // Close the dialog
+
+    // Ensure logout completes before redirecting
+    setTimeout(() => {
+      navigate("/Admin");
+    }, 500);
   };
 
   const cancelLogout = () => {
@@ -37,7 +46,11 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
       {/* Sidebar Header */}
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center space-x-4">
-          <img src={logo} alt="Logo" className="h-[5vmin]" />
+            <img
+              src={logo}
+              className="h-[5vmin] pointer-events-none z-10 animate-spin-slow"
+              alt="logo" 
+            />
           {isSidebarOpen && <img src={Nametext} alt="UniVerse" className="h-6" />}
         </div>
         <button onClick={toggleSidebar}>
@@ -54,6 +67,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
         <button
           onClick={() => setActivePage("Dashboard")}
           className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          title="Dashboard"
         >
           <img src={dashboardIcon} alt="Dashboard" className="w-6 h-6 mr-4" />
           {isSidebarOpen && <span>Dashboard</span>}
@@ -61,6 +75,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
         <button
           onClick={() => setActivePage("UserManagement")}
           className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          title="User Management"
         >
           <img src={userManagementIcon} alt="User Management" className="w-6 h-6 mr-4" />
           {isSidebarOpen && <span>User Management</span>}
@@ -68,6 +83,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
         <button
           onClick={() => setActivePage("AcademicManagement")}
           className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          title="Academic Management"
         >
           <img src={academicManagementIcon} alt="Academic Management" className="w-6 h-6 mr-4" />
           {isSidebarOpen && <span>Academic Management</span>}
@@ -75,6 +91,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
         <button
           onClick={() => setActivePage("ContentModeration")}
           className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          title="Content Moderation"
         >
           <img src={contentModerationIcon} alt="Content Moderation" className="w-6 h-6 mr-4" />
           {isSidebarOpen && <span>Content Moderation</span>}
@@ -82,6 +99,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
         <button
           onClick={() => setActivePage("EventManagement")}
           className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          title="Event Management"
         >
           <img src={eventManagementIcon} alt="Event Management" className="w-6 h-6 mr-4" />
           {isSidebarOpen && <span>Event Management</span>}
@@ -89,25 +107,28 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
         <button
           onClick={() => setActivePage("Settings")}
           className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          title="Settings"
         >
           <img src={settingsIcon} alt="Settings" className="w-6 h-6 mr-4" />
           {isSidebarOpen && <span>Settings</span>}
         </button>
       </nav>
 
-        {/* Logout */}
-        <a href="#logout" onClick={handleLogout} className="flex items-center justify-center p-4 bg-gray-200 rounded hover:bg-blue-800 hover:text-white"
-          title="log-out">
-          <img src={log_out} alt="Logout" className="w-6 h-6 rounded-full mr-2" />
-
-          {isSidebarOpen && <span>Logout</span>}
-        </a>
-
+      {/* Logout */}
+      <a
+        href="#logout"
+        onClick={handleLogout}
+        className="flex items-center justify-center p-4 bg-gray-200 rounded hover:bg-blue-800 hover:text-white"
+        title="click to log-out"
+      >
+        <img src={log_out} alt="Logout" className="w-6 h-6 rounded-full mr-2" />
+        {isSidebarOpen && <span>Logout</span>}
+      </a>
 
       {/* Custom Logout Dialog */}
       {showLogoutDialog && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[100]">
+          <div className="bg-white p-6 rounded-lg shadow-lg z-[101]">
             <h3 className="text-lg font-bold mb-4">Logout Confirmation</h3>
             <p>Are you sure you want to log out?</p>
             <div className="flex justify-between mt-4">
