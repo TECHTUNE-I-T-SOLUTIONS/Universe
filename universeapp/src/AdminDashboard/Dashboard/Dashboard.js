@@ -3,7 +3,7 @@ import Analytics from "./Analytics";
 import Reports from "./Reports";
 import CloseIcon from "../../icons/close.png";
 
-const Dashboard = ({ onClose, showLogoutDialog }) => {
+const Dashboard = ({ setActivePage, onClose, showLogoutDialog }) => {
   const [activeTab, setActiveTab] = useState("analytics"); // State to switch between Analytics and Reports
 
   const formatDate = () => {
@@ -12,12 +12,7 @@ const Dashboard = ({ onClose, showLogoutDialog }) => {
   };
 
   return (
-    <div
-      className={`academic-progress h-full w-full p-2 sm:p-6 bg-gray-100 min-h-screen relative ${
-        showLogoutDialog ? "opacity-50 pointer-events-none" : ""
-      }`}
-      style={{ zIndex: showLogoutDialog ? 10 : 1 }} // Lower z-index when the logout dialog is visible
-    >
+    <div>
       {/* Header */}
       <header className="flex justify-between items-center bg-blue-400 p-2 rounded mb-6 fixed top-0 w-full">
         <div>
@@ -26,15 +21,16 @@ const Dashboard = ({ onClose, showLogoutDialog }) => {
         </div>
       </header>
 
-      {/* Tab Navigation */}
-      <div className="mt-20 p-4">
+      {/* Close Button */}
         <button
-          className="absolute top-20 right-4 w-5 h-5 bg-transparent rounded-full flex items-center justify-center"
-          onClick={onClose}
+          className="fixed top-5 right-4 w-5 h-5 bg-transparent rounded-full flex items-center justify-center"
+          onClick={() => setActivePage("AdminMainContent")}
         >
           <img src={CloseIcon} alt="Close" className="w-full h-full" />
         </button>
 
+      {/* Tab Navigation */}
+      <div className="mt-10 p-4">
         <div className="flex justify-around space-x-4 bg-white shadow rounded-lg p-2">
           <button
             onClick={() => setActiveTab("analytics")}
