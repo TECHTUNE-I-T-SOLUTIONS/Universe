@@ -100,13 +100,26 @@ const HealthAndWellness = ({ onClose }) => {
         <div>
           <h1 className="text-xl font-bold text-black">HEALTH AND WELLNESS</h1>
           <p className="text-sm text-white">Today is: {formatDate()}</p>
+          {loading && <p className="text-center">Loading...</p>}
+          {results.length > 0 && (
+            <div className="mt-4">
+              <h3 className="text-lg font-semibold">Search Results</h3>
+              <ul className="mt-2 space-y-2">
+                {results.map((item, index) => (
+                  <li key={index} className="p-2 border rounded shadow">
+                    <p><strong>Food:</strong> {item.food_name}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </header>
 
       <div className="mt-1 p-2 space-y-8">
         {/* Close Icon */}
         <div className="flex justify-end">
-          <button className="w-10 h-10 bg-transparent flex items-center justify-center">
+          <button className="w-5 h-5 bg-transparent flex items-center justify-center">
             <img
               src={CloseIcon}
               alt="Close"
@@ -202,7 +215,7 @@ const HealthAndWellness = ({ onClose }) => {
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-4"
               onClick={() => setShowWidget(!showWidget)}
             >
-              {showWidget ? "Hide Healthily Widget" : "Show Healthily Widget"}
+              {showWidget ? "Hide Widget" : "Show Widget"}
             </button>
             {showWidget && (
               <div>

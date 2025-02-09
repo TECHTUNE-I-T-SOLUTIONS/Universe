@@ -1,7 +1,0 @@
-Help me with this:
-i created a react app "goalsapp" and i wanna create a simple goalsapp, in the page, there'll be three frames "in mind", "in process" and "achieved". it'll have a textinput where i can add the goal i have in mind to achieve and there'll be another input under it where i'll add the description, there'll be a button to add the goal to the page under "in mind" and when i want to start processing the goal, i'll move it to under "in process" and when i've achieved it, i'll move it to achieved. thus, i'll be able to track my goals.
-find a logo online that i can use to represent the app and use it.
-and add the funtionality of creating accounts and logging in in separate components to be shown in the main page and on log in, it'll display the main contents.
-i want to use particles as the background to make it lively and interesting too.
-and i want a dark gradient colour to make it look futuristic and modern, and i want the page to look sharp and clear, if there's a library to handle that.
-I'll be using tailwind for the styles as well.
