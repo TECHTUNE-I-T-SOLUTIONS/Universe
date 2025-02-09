@@ -124,7 +124,7 @@ const FinancialManagement = ({ onClose }) => {
     );
 
   return (
-    <div className="flex flex-col h-full w-full bg-white p-6">
+    <div className="flex flex-col h-full w-full bg-white p-0">
       <header className="flex flex-row bg-blue-400 w-full p-2 rounded mb-6 fixed top-0 z-10 overflow-y-auto">
         <div className="w-full">
           <h1 className="text-xl font-bold text-black">FINANCIAL MANAGEMENT</h1>
@@ -132,9 +132,9 @@ const FinancialManagement = ({ onClose }) => {
         </div>
       </header>
 
-      <div className="mt-1 space-y-6">
+      <div className="mt-1 p-2 space-y-6">
         <div className="flex justify-end">
-          <button className="w-8 h-8 bg-transparent flex items-center justify-center">
+          <button className="w-5 h-5 bg-transparent flex items-center justify-center">
             <img
               src={CloseIcon}
               alt="Close"

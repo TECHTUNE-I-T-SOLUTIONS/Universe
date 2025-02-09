@@ -1,73 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import settings from "../../icons/settings.png";
 import profile from "../../icons/profile.png";
-import sunIcon from "../../icons/sun.png";
-import moonIcon from "../../icons/moon.png";
 
-const AdminMainContent = () => {
+const AdminMainContent = ({ setActivePage }) => {
   // Function to get the current date in a friendly format
   const getCurrentDate = () => {
     const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
     return new Date().toLocaleDateString("en-US", options);
   };
 
-  // Theme state and toggle function
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-  const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === "light" ? "dark" : "light"));
-  };
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
   return (
-    <div>
+    // Outer container with a vibrant gradient background covering the full viewport height
+    <div className="min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
       {/* Header Section */}
-      <header className="flex items-center justify-between bg-blue-400 p-2 rounded mb-6 fixed top-0 w-full z-30">
+      <header className="flex items-center justify-between bg-gradient-to-r from-blue-400 to-indigo-500 p-2 rounded-b-lg fixed top-0 w-full z-30 shadow-lg">
         {/* Left side: Text */}
         <div>
-          <h1 className="text-xl font-bold text-white">Welcome! Admin</h1>
+          <h1 className="text-2xl font-bold text-black">Welcome! Admin</h1>
           <p className="text-sm text-white">{getCurrentDate()}</p>
         </div>
         {/* Right side: Icons */}
-        <div className="flex items-center space-x-4">
-          <img src={settings} alt="Settings" className="w-8 h-8 cursor-pointer" />
-          <img src={profile} alt="Profile" className="w-8 h-8 cursor-pointer" />
+        <div className="flex items-center mr-60 space-x-4">
           <img
-            src={theme === "light" ? moonIcon : sunIcon}
-            alt="Toggle Theme"
-            className="w-8 h-8 cursor-pointer"
-            onClick={toggleTheme}
+            src={settings}
+            alt="Settings"
+            className="w-8 h-8 cursor-pointer hover:scale-110 transition-transform"
+            onClick={() => setActivePage("Settings")}
+          />
+          <img
+            src={profile}
+            alt="Profile"
+            className="w-8 h-8 cursor-pointer hover:scale-110 transition-transform"
+            onClick={() => setActivePage("Profile_Settings")}
           />
         </div>
       </header>
 
       {/* Main Content Section */}
-      {/* Added top padding (pt-20) to push the content below the fixed header */}
-      <section className="pt-20 p-6 bg-white shadow-md rounded-lg m-4">
-        <h2 className="text-lg font-semibold mb-4">Admin Responsibilities</h2>
-        <ul className="list-disc list-inside space-y-2">
-          <li className="text-gray-700">
-            Ensure all student details are kept confidential and secure.
-          </li>
-          <li className="text-gray-700">
-            Avoid actions or decisions that may create conflicts in the students' section.
-          </li>
-          <li className="text-gray-700">
-            Regularly monitor and update system data to maintain accuracy and reliability.
-          </li>
-          <li className="text-gray-700">
-            Uphold ethical standards and act in the best interest of the institution.
-          </li>
-          <li className="text-gray-700">
-            Address student and staff concerns promptly and professionally.
-          </li>
+      <section className="mt-1 p-8 pt-24 bg-gradient-to-r from-white to-gray-100 shadow-xl rounded-lg m-4">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Admin Responsibilities</h2>
+        <ul className="list-disc list-inside space-y-2 text-gray-700">
+          <li>Ensure all student details are kept confidential and secure.</li>
+          <li>Avoid actions or decisions that may create conflicts in the students' section.</li>
+          <li>Regularly monitor and update system data to maintain accuracy and reliability.</li>
+          <li>Uphold ethical standards and act in the best interest of the institution.</li>
+          <li>Address student and staff concerns promptly and professionally.</li>
         </ul>
       </section>
     </div>

@@ -1,37 +1,68 @@
 import React, { useState } from "react";
 import { Alert } from "@nextui-org/alert";
+// Import React Icons for edit and save:
+import { FiEdit, FiCheckCircle } from "react-icons/fi";
+import { FaUpload } from "react-icons/fa";
 
 const formatDate = () => {
   const date = new Date();
   return date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 };
 
-const PersonalPage = ({ onClose }) => {
-  const [image, setImage] = useState(null);
-  const [nickname, setNickname] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [department, setDepartment] = useState("");
-  const [courseOffered, setCourseOffered] = useState("");
-  const [facultyOfStudy, setFacultyOfStudy] = useState("");
-  const [favoriteCourses, setFavoriteCourses] = useState("");
-  const [isNicknameEditable, setIsNicknameEditable] = useState(false);
-  const [isPhoneNumberEditable, setIsPhoneNumberEditable] = useState(false);
-  const [isDepartmentEditable, setIsDepartmentEditable] = useState(false);
-  const [isCourseOfferedEditable, setIsCourseOfferedEditable] = useState(false);
-  const [isFacultyOfStudyEditable, setIsFacultyOfStudyEditable] = useState(false);
-  const [isFavoriteCoursesEditable, setIsFavoriteCoursesEditable] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
+  const PersonalPage = ({ onClose }) => {
+    // Existing state variables
+    const [image, setImage] = useState(null);
+    const [nickname, setNickname] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [department, setDepartment] = useState("");
+    const [courseOffered, setCourseOffered] = useState("");
+    const [facultyOfStudy, setFacultyOfStudy] = useState("");
+    const [favoriteCourses, setFavoriteCourses] = useState("");
+  
+    // Editable flags
+    const [isNicknameEditable, setIsNicknameEditable] = useState(false);
+    const [isPhoneNumberEditable, setIsPhoneNumberEditable] = useState(false);
+    const [isDepartmentEditable, setIsDepartmentEditable] = useState(false);
+    const [isCourseOfferedEditable, setIsCourseOfferedEditable] = useState(false);
+    const [isFacultyOfStudyEditable, setIsFacultyOfStudyEditable] = useState(false);
+    const [isFavoriteCoursesEditable, setIsFavoriteCoursesEditable] = useState(false);
+  
+    const [showAlert, setShowAlert] = useState(false);
+  
+    // New: Handler to update profile in the database
+    const handleUpdateProfile = async () => {
+      // Prepare the payload for update
+      const payload = {
+        nickname,
+        phoneNumber,
+        department,
+        courseOffered,
+        facultyOfStudy,
+        favoriteCourses,
+        image, // This could be a base64 string or URL
       };
-      reader.readAsDataURL(file);
-    }
-  };
+  
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/update-profile`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Profile update failed");
+        }
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000);
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      }
+    };
+  
 
   const toggleEdit = (field) => {
     switch (field) {
@@ -56,13 +87,6 @@ const PersonalPage = ({ onClose }) => {
       default:
         break;
     }
-  };
-
-  const onSave = () => {
-    // Logic for saving the data
-    console.log("Data saved!");
-    setShowAlert(true);
-    setTimeout(() => setShowAlert(false), 3000); // Hide alert after 3 seconds
   };
 
   return (
@@ -93,158 +117,190 @@ const PersonalPage = ({ onClose }) => {
           <p className="text-sm text-white">Today is: {formatDate()}</p>
         </div>
       </header>
+
       <div className="flex flex-col w-full h-full bg-white p-4 overflow-y-auto">
-        <button
-          className="self-end px-3 py-1 bg-green-500 text-white rounded mb-4"
-          onClick={onSave}
-        >
-          Save
-        </button>
-        <button
-          className="self-end px-3 py-1 bg-red-500 text-white rounded mb-4"
-          onClick={onClose}
-        >
-          Close
-        </button>
+
+        <div className="flex justify-end space-x-4 mt-6">
+          <button
+            onClick={handleUpdateProfile}
+            className="px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 flex items-center space-x-2"
+          >
+            <FiCheckCircle size={20} />
+            <span>Save</span>
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 flex items-center space-x-2"
+          >
+            <span>Close</span>
+          </button>
+        </div>
+
+
         <h2 className="text-2xl font-bold mb-4">Personal Profile Settings</h2>
         <form className="space-y-4">
           {/* Profile Image Section */}
           <div className="flex items-center space-x-4">
-            <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
-              {/* Image holder */}
+            <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center">
               {image ? (
-                <img src={image} alt="Profile" className="w-full h-full rounded-full object-cover" />
+                <img src={image} alt="Profile" className="w-full h-full object-cover" />
               ) : (
                 <span className="text-gray-500">No Image</span>
               )}
             </div>
-            <div>
-              <label className="block text-gray-700">Profile Image</label>
+            <div className="flex flex-col">
+              <label 
+                htmlFor="profilePicInput"  // Associate the label with the input
+                className="mb-1 text-gray-700 flex items-center space-x-1 cursor-pointer"
+              >
+                <FaUpload className="text-blue-500" size={20} />
+                <span>Change Photo</span>
+              </label>
               <input
+                id="profilePicInput" // Added id attribute
                 type="file"
-                className="w-full border border-gray-300 rounded p-2"
-                onChange={handleImageChange}
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setImage(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
               />
             </div>
           </div>
 
-          {/* Nickname */}
-          <div className="flex items-center">
+          {/* Nickname Field */}
+          <div className="flex items-center justify-between">
             <label className="block text-gray-700">Nickname</label>
             <button
               type="button"
-              className="ml-4 text-blue-500"
-              onClick={() => toggleEdit("nickname")}
+              onClick={() => setIsNicknameEditable(!isNicknameEditable)}
+              className="text-blue-500 focus:outline-none"
             >
-              Edit
+              {isNicknameEditable ? <FiCheckCircle size={20} /> : <FiEdit size={20} />}
             </button>
           </div>
           <input
             type="text"
             placeholder="Enter your nickname"
-            className="w-full border border-gray-300 rounded p-2"
+            className={`w-full border rounded p-2 focus:outline-none focus:ring ${isNicknameEditable ? "border-blue-500" : "border-gray-300"}`}
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
             disabled={!isNicknameEditable}
           />
 
           {/* Phone Number */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
             <label className="block text-gray-700">Phone Number</label>
             <button
               type="button"
-              className="ml-4 text-blue-500"
               onClick={() => toggleEdit("phoneNumber")}
+              className="ml-4 text-blue-500 focus:outline-none"
             >
-              Edit
+              {isPhoneNumberEditable ? <FiCheckCircle size={20} /> : <FiEdit size={20} />}
             </button>
           </div>
           <input
             type="text"
             placeholder="Enter your phone number"
-            className="w-full border border-gray-300 rounded p-2"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             disabled={!isPhoneNumberEditable}
+            className={`w-full border rounded p-2 focus:outline-none focus:ring ${
+              isPhoneNumberEditable ? "border-blue-500" : "border-gray-300"
+            } mb-4`}
           />
 
           {/* Department */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
             <label className="block text-gray-700">Department</label>
             <button
               type="button"
-              className="ml-4 text-blue-500"
               onClick={() => toggleEdit("department")}
+              className="ml-4 text-blue-500 focus:outline-none"
             >
-              Edit
+              {isDepartmentEditable ? <FiCheckCircle size={20} /> : <FiEdit size={20} />}
             </button>
           </div>
           <input
             type="text"
             placeholder="Enter your department"
-            className="w-full border border-gray-300 rounded p-2"
             value={department}
             onChange={(e) => setDepartment(e.target.value)}
             disabled={!isDepartmentEditable}
+            className={`w-full border rounded p-2 focus:outline-none focus:ring ${
+              isDepartmentEditable ? "border-blue-500" : "border-gray-300"
+            } mb-4`}
           />
 
           {/* Course Offered */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
             <label className="block text-gray-700">Course Offered</label>
             <button
               type="button"
-              className="ml-4 text-blue-500"
               onClick={() => toggleEdit("courseOffered")}
+              className="ml-4 text-blue-500 focus:outline-none"
             >
-              Edit
+              {isCourseOfferedEditable ? <FiCheckCircle size={20} /> : <FiEdit size={20} />}
             </button>
           </div>
           <input
             type="text"
             placeholder="Enter your course offered"
-            className="w-full border border-gray-300 rounded p-2"
             value={courseOffered}
             onChange={(e) => setCourseOffered(e.target.value)}
             disabled={!isCourseOfferedEditable}
+            className={`w-full border rounded p-2 focus:outline-none focus:ring ${
+              isCourseOfferedEditable ? "border-blue-500" : "border-gray-300"
+            } mb-4`}
           />
 
           {/* Faculty of Study */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
             <label className="block text-gray-700">Faculty of Study</label>
             <button
               type="button"
-              className="ml-4 text-blue-500"
               onClick={() => toggleEdit("facultyOfStudy")}
+              className="ml-4 text-blue-500 focus:outline-none"
             >
-              Edit
+              {isFacultyOfStudyEditable ? <FiCheckCircle size={20} /> : <FiEdit size={20} />}
             </button>
           </div>
           <input
             type="text"
             placeholder="Enter your faculty of study"
-            className="w-full border border-gray-300 rounded p-2"
             value={facultyOfStudy}
             onChange={(e) => setFacultyOfStudy(e.target.value)}
             disabled={!isFacultyOfStudyEditable}
+            className={`w-full border rounded p-2 focus:outline-none focus:ring ${
+              isFacultyOfStudyEditable ? "border-blue-500" : "border-gray-300"
+            } mb-4`}
           />
 
           {/* Favorite Courses */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
             <label className="block text-gray-700">Favorite Courses</label>
             <button
               type="button"
-              className="ml-4 text-blue-500"
               onClick={() => toggleEdit("favoriteCourses")}
+              className="ml-4 text-blue-500 focus:outline-none"
             >
-              Edit
+              {isFavoriteCoursesEditable ? <FiCheckCircle size={20} /> : <FiEdit size={20} />}
             </button>
           </div>
           <textarea
             placeholder="Enter your favorite courses"
-            className="w-full border border-gray-300 rounded p-2"
             value={favoriteCourses}
             onChange={(e) => setFavoriteCourses(e.target.value)}
             disabled={!isFavoriteCoursesEditable}
+            className={`w-full border rounded p-2 focus:outline-none focus:ring ${
+              isFavoriteCoursesEditable ? "border-blue-500" : "border-gray-300"
+            } mb-4`}
           />
         </form>
       </div>

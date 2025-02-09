@@ -55,17 +55,19 @@ const SocialAndCommunity = ({ onClose }) => {
         </div>
       </header>
 
-      {/* Content */}
-      <div className="relative flex flex-col w-full h-full bg-white p-1 mt-2 rounded">
-        {/* Close Button in Content */}
-        <button
-          className="absolute top-4 right-4 w-5 h-5 bg-transparent rounded-full flex items-center justify-center"
-          onClick={onClose}
-        >
-          <img src={CloseIcon} alt="Close" className="w-full h-full" />
-        </button>
 
-        <div className="flex justify-around mb-4">
+      {/* Content */}
+      <div className="relative flex flex-col w-full h-full bg-white p-1 mt-1 rounded">
+        {/* Close Button in Content */}
+        <div className="flex mt-0 justify-end">
+          <button
+            className="absolute top-0 mt-1 right-4 w-5 h-5 bg-transparent rounded-full flex items-center justify-center"
+            onClick={onClose}
+          >
+            <img src={CloseIcon} alt="Close" className="w-full h-full" />
+          </button>
+        </div>
+        <div className="flex justify-around mb-2 mt-6">
           <button
             className="px-4 py-2 bg-blue-500 text-white rounded"
             onClick={() => handleSectionChange("clubs")}

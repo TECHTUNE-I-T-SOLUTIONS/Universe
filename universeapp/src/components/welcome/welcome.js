@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import { FiArrowDown } from "react-icons/fi";
+
 // import { useHistory } from "react-router-dom"; // Assuming you're using react-router for navigation
 import logo from "../../icons/UniVerselog.svg";
 import Nametext from "../../icons/UniVersetext.svg";
@@ -52,20 +54,46 @@ const Welcome = () => {
   const [activePage, setActivePage] = useState(null); // Track the active page  
   const [showLogoutDialog, setShowLogoutDialog] = useState(false); // For showing the logout dialog  
   const navigate = useNavigate(); // Get the navigate function
+  const [showProfilePrompt, setShowProfilePrompt] = useState(() => {
+    return localStorage.getItem("profilePromptShown") !== "true";
+  });
+   
+  // NEW: State variable for the username
+  const [username, setUsername] = useState("");
 
+  // NEW: useEffect to fetch the logged-in user's details
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetch(`${process.env.REACT_APP_API_URL}/api/user`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.username) {
+            setUsername(data.username);
+          }
+        })
+        .catch((err) => console.error("Error fetching user details:", err));
+    }
+  }, []);
 
+  // Toggle sidebar open/close
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  // Navigation functions that set the active page
   const openPersonalPage = () => {
-    setActivePage("personal"); // Set the active page to 'personal'
+    setActivePage("personal");
   };
 
   const openAcademicProgress = () => {
-    setActivePage("academicProgress"); // Set the active page to 'personal'
+    setActivePage("academicProgress");
   };
-  
+
   const openSocialAndCommunity = () => {
     setActivePage("SocialAndCommunity");
   };
@@ -86,27 +114,57 @@ const Welcome = () => {
     setActivePage("SettingsPage");
   };
 
-
   const closeActivePage = () => {
-    setActivePage(null); // Close the active page
+    setActivePage(null); // Close the active page (return to the default welcome view)
   };
 
-
+  // Logout handlers
   const handleLogout = () => {
-    setShowLogoutDialog(true); // Show the logout confirmation dialog
+    setShowLogoutDialog(true);
   };
 
   const confirmLogout = () => {
-    setShowLogoutDialog(false); // Close the dialog
+    setShowLogoutDialog(false);
     navigate("/auth");
   };
 
   const cancelLogout = () => {
-    setShowLogoutDialog(false); // Close the dialog and stay on the current page
+    setShowLogoutDialog(false);
   };
+
+  // Helper function that returns classes based on active page
+  const getLinkClasses = (pageName) => {
+    return `flex items-center space-x-3 p-2 rounded ${
+      activePage === pageName ? "bg-blue-800 text-white" : "hover:bg-blue-800 hover:text-white"
+    }`;
+  };
+
 
   return (
     <div className="flex h-screen bg-gray-100">
+      {showProfilePrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-500">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+            <h2 className="text-2xl font-bold mb-4">Update Your Profile</h2>
+            <p className="mb-4">
+              Welcome to your portal, {username ? username : "User"}! We recommend updating your profile for a better experience.
+            </p>
+            <div className="flex justify-center mb-4 animate-bounce">
+              <FiArrowDown className="text-blue-500 text-4xl" />
+            </div>
+            <button
+              onClick={() => {
+                setShowProfilePrompt(false);
+                localStorage.setItem("profilePromptShown", "true");
+              }}
+              className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Sidebar */}
       <aside
         className={`${
@@ -116,7 +174,7 @@ const Welcome = () => {
           backgroundColor: "#9B9BA6",
         }}
       >
-        {/* Toggle Icon */}
+        {/* Toggle Icon and Branding */}
         <div className="flex items-center justify-between p-4 border-b border-blue-800">
           <div className="flex items-center space-x-4">
             <img
@@ -146,68 +204,98 @@ const Welcome = () => {
           <a
             href="#personal"
             onClick={openPersonalPage}
-            title="Personal" // Tooltip text
-            className="flex items-center space-x-3 p-2 rounded hover:bg-blue-800 hover:text-white"
+            title="Personal"
+            className={getLinkClasses("personal")}
           >
-            <img src={personal_icon} alt="Personal" className="w-6 h-6 rounded-full" />
+            <img
+              src={personal_icon}
+              alt="Personal"
+              className="w-6 h-6 rounded-full"
+            />
             {isSidebarOpen && <span>Personal</span>}
           </a>
           <a
             href="#academics"
             onClick={openAcademicProgress}
-            title="Academics" // Tooltip text
-            className="flex items-center space-x-3 p-2 rounded hover:bg-blue-800 hover:text-white"
+            title="Academics"
+            className={getLinkClasses("academicProgress")}
           >
-            <img src={academics} alt="Academics" className="w-6 h-6 rounded-full" />
+            <img
+              src={academics}
+              alt="Academics"
+              className="w-6 h-6 rounded-full"
+            />
             {isSidebarOpen && <span>Academics</span>}
           </a>
           <a
             href="#community"
             onClick={openSocialAndCommunity}
-            title="Community" // Tooltip text
-            className="flex items-center space-x-3 p-2 rounded hover:bg-blue-800 hover:text-white"
+            title="Community"
+            className={getLinkClasses("SocialAndCommunity")}
           >
-            <img src={community} alt="Community" className="w-6 h-6 rounded-full" />
+            <img
+              src={community}
+              alt="Community"
+              className="w-6 h-6 rounded-full"
+            />
             {isSidebarOpen && <span>Community</span>}
           </a>
           <a
             href="#wellness"
             onClick={openHealthAndWellness}
-            title="Wellness" // Tooltip text
-            className="flex items-center space-x-3 p-2 rounded hover:bg-blue-800 hover:text-white"
+            title="Wellness"
+            className={getLinkClasses("HealthAndWellness")}
           >
-            <img src={wellness} alt="Wellness" className="w-6 h-6 rounded-full" />
+            <img
+              src={wellness}
+              alt="Wellness"
+              className="w-6 h-6 rounded-full"
+            />
             {isSidebarOpen && <span>Wellness</span>}
           </a>
           <a
             href="#finance"
             onClick={openFinancialManagement}
-            title="Finance" // Tooltip text
-            className="flex items-center space-x-3 p-2 rounded hover:bg-blue-800 hover:text-white"
+            title="Finance"
+            className={getLinkClasses("FinancialManagement")}
           >
-            <img src={finance} alt="Finance" className="w-6 h-6 rounded-full" />
+            <img
+              src={finance}
+              alt="Finance"
+              className="w-6 h-6 rounded-full"
+            />
             {isSidebarOpen && <span>Finance</span>}
           </a>
           <a
             href="#career"
             onClick={openCareerDevelopment}
-            title="Career" // Tooltip text
-            className="flex items-center space-x-3 p-2 rounded hover:bg-blue-800 hover:text-white"
+            title="Career"
+            className={getLinkClasses("CareerDevelopment")}
           >
-            <img src={career} alt="Career" className="w-6 h-6 rounded-full" />
+            <img
+              src={career}
+              alt="Career"
+              className="w-6 h-6 rounded-full"
+            />
             {isSidebarOpen && <span>Career</span>}
           </a>
         </nav>
 
         {/* Logout */}
-        <a href="#logout" onClick={handleLogout} className="flex items-center justify-center p-4 bg-gray-200 rounded hover:bg-blue-800 hover:text-white"
-          title="log-out">
-          <img src={log_out} alt="Logout" className="w-6 h-6 rounded-full mr-2" />
-
+        <a
+          href="#logout"
+          onClick={handleLogout}
+          className="flex items-center justify-center p-4 bg-gray-200 rounded hover:bg-blue-800 hover:text-white"
+          title="Logout"
+        >
+          <img
+            src={log_out}
+            alt="Logout"
+            className="w-6 h-6 rounded-full mr-2"
+          />
           {isSidebarOpen && <span>Logout</span>}
         </a>
       </aside>
-
 
       {/* Custom Logout Dialog */}
       {showLogoutDialog && (
@@ -230,7 +318,7 @@ const Welcome = () => {
 
       {/* Main Content */}
       <main   
-          className={`flex-1 p-6 bg-gradient-to-br from-[#5753F4] to-[#A1A1AD] rounded-lg transition-all duration-300 mt-16 h-full overflow-y-auto ${
+          className={`flex-1 p-0 bg-gradient-to-br from-[#5753F4] to-[#A1A1AD] rounded-lg transition-all duration-300 mt-16 h-full overflow-y-auto ${
             isSidebarOpen ? "ml-64" : "ml-20"
           }`}
       >
@@ -248,12 +336,14 @@ const Welcome = () => {
         ) : (
           <>
             <header
-            className={`flex justify-between items-center bg-blue-300 p-4 rounded mb-6 fixed top-0 transition-all duration-300 z-10 ${
+            className={`flex justify-between items-center bg-blue-300 p-2 rounded mb-6 fixed top-0 transition-all duration-300 z-10 ${
               isSidebarOpen ? "left-64" : "left-20"
             } right-0`}
           >          
-          <div>
-                <h1 className="text-xl font-bold">WELCOME</h1>
+          <div> 
+                <h1 className="text-xl font-bold">
+                {username ? `Welcome, ${username}` : "WELCOME"}
+                </h1>
                 <p className="text-sm text-white">Today is: {formatDate()}</p>
               </div>
               <div className="flex items-center space-x-4">
@@ -270,7 +360,7 @@ const Welcome = () => {
             </header>
 
             {/* Academic Progress Section */}
-            <section className="mt-6">
+            <section className="mt-6 p-2">
               <h2 className="text-lg font-bold mb-4">Academic Progress</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="flex flex-col items-center bg-gray-200 p-4 rounded">
@@ -294,7 +384,7 @@ const Welcome = () => {
             </section>
 
             {/* Social and Community Engagement Section */}
-            <section className="mt-6">
+            <section className="mt-6 p-2">
               <h2 className="text-lg font-bold mb-4">Social and Community Engagement</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="flex flex-col items-center bg-gray-200 p-4 rounded">
@@ -318,7 +408,7 @@ const Welcome = () => {
             </section>
 
             {/* Health and Wellness Section */}
-            <section className="mt-6">
+            <section className="mt-6 p-2">
               <h2 className="text-lg font-bold mb-4">Health and Wellness</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="flex flex-col items-center bg-gray-200 p-4 rounded">
@@ -342,7 +432,7 @@ const Welcome = () => {
             </section>
 
             {/* Financial Management Section */}
-            <section className="mt-6">
+            <section className="mt-6 p-2">
               <h2 className="text-lg font-bold mb-4">Financial Management</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="flex flex-col items-center bg-gray-200 p-4 rounded">
@@ -366,7 +456,7 @@ const Welcome = () => {
             </section>
 
             {/* Career Development Section */}
-            <section className="mt-6">
+            <section className="mt-6 p-2">
               <h2 className="text-lg font-bold mb-4">Career Development</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="flex flex-col items-center bg-gray-200 p-4 rounded">

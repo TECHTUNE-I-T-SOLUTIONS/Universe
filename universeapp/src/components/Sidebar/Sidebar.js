@@ -1,21 +1,20 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
+import { useNavigate } from "react-router-dom";
 import logo from "../../icons/UniVerselog.svg";
 import Nametext from "../../icons/UniVersetext.svg";
 import openSidebarIcon from "../../icons/open_sidebar.png";
 import closeSidebarIcon from "../../icons/close_sidebar.png";
 import log_out from "../../icons/log-out.png";
-import dashboardIcon from "../../icons/Dashboard.png"; // Replace with your actual icon paths
+import dashboardIcon from "../../icons/Dashboard.png";
 import userManagementIcon from "../../icons/User_Management.png";
 import academicManagementIcon from "../../icons/Academic_Management.png";
 import contentModerationIcon from "../../icons/Content_Moderation.png";
 import eventManagementIcon from "../../icons/Event_Management.png";
 import settingsIcon from "../../icons/Setings.png";
 
-const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
+const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage, activePage }) => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-
-  const navigate = useNavigate(); // Hook for redirection
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     setShowLogoutDialog(true);
@@ -25,9 +24,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
     console.log("Logout confirmed, redirecting...");
     localStorage.removeItem("adminToken");
     sessionStorage.removeItem("adminSession");
-    setShowLogoutDialog(false); // Close the dialog
-
-    // Ensure logout completes before redirecting
+    setShowLogoutDialog(false);
     setTimeout(() => {
       navigate("/Admin");
     }, 500);
@@ -36,6 +33,12 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
   const cancelLogout = () => {
     setShowLogoutDialog(false);
   };
+
+  // Utility function to return active class if the page is active.
+  const getButtonClasses = (pageName) =>
+    `flex items-center w-full text-left p-2 ${
+      activePage === pageName ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+    }`;
 
   return (
     <aside
@@ -46,11 +49,11 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
       {/* Sidebar Header */}
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center space-x-4">
-            <img
-              src={logo}
-              className="h-[5vmin] pointer-events-none z-10 animate-spin-slow"
-              alt="logo" 
-            />
+          <img
+            src={logo}
+            className="h-[5vmin] pointer-events-none z-10 animate-spin-slow"
+            alt="logo"
+          />
           {isSidebarOpen && <img src={Nametext} alt="UniVerse" className="h-6" />}
         </div>
         <button onClick={toggleSidebar}>
@@ -66,7 +69,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
       <nav className="flex-1 px-4 space-y-4 overflow-y-auto">
         <button
           onClick={() => setActivePage("Dashboard")}
-          className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          className={getButtonClasses("Dashboard")}
           title="Dashboard"
         >
           <img src={dashboardIcon} alt="Dashboard" className="w-6 h-6 mr-4" />
@@ -74,7 +77,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
         </button>
         <button
           onClick={() => setActivePage("UserManagement")}
-          className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          className={getButtonClasses("UserManagement")}
           title="User Management"
         >
           <img src={userManagementIcon} alt="User Management" className="w-6 h-6 mr-4" />
@@ -82,7 +85,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
         </button>
         <button
           onClick={() => setActivePage("AcademicManagement")}
-          className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          className={getButtonClasses("AcademicManagement")}
           title="Academic Management"
         >
           <img src={academicManagementIcon} alt="Academic Management" className="w-6 h-6 mr-4" />
@@ -90,7 +93,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
         </button>
         <button
           onClick={() => setActivePage("ContentModeration")}
-          className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          className={getButtonClasses("ContentModeration")}
           title="Content Moderation"
         >
           <img src={contentModerationIcon} alt="Content Moderation" className="w-6 h-6 mr-4" />
@@ -98,7 +101,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
         </button>
         <button
           onClick={() => setActivePage("EventManagement")}
-          className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          className={getButtonClasses("EventManagement")}
           title="Event Management"
         >
           <img src={eventManagementIcon} alt="Event Management" className="w-6 h-6 mr-4" />
@@ -106,7 +109,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
         </button>
         <button
           onClick={() => setActivePage("Settings")}
-          className="flex items-center w-full text-left p-2 hover:bg-gray-200"
+          className={getButtonClasses("Settings")}
           title="Settings"
         >
           <img src={settingsIcon} alt="Settings" className="w-6 h-6 mr-4" />
@@ -141,8 +144,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setActivePage }) => {
             </div>
           </div>
         </div>
-      )};
-
+      )}
     </aside>
   );
 };
