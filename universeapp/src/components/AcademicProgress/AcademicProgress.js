@@ -5,15 +5,50 @@ import VolunteerOpportunities from "../VolunteerOpportunities";
 import PerformanceAnalysis from "../PerformanceAnalysis";
 import { OPENAI_API_KEY } from "../../apiKeys"; // Import your API key
 import { formatDate } from "../../utils/formatDate";
+import { Alert } from "@nextui-org/alert";
 
 const AcademicProgress = ({ onClose }) => {
   // Existing states for assignments/exams
   const [assignments, setAssignments] = useState([]);
   const [examSchedule, setExamSchedule] = useState([]);
   const [newAssignment, setNewAssignment] = useState({ title: "", deadline: "", grade: "" });
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("success");   
   const [newExam, setNewExam] = useState({ title: "", date: "", location: "" });
   const [isEditing, setIsEditing] = useState(false);
-
+  const handleSaveAcademicProgress = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/update-academic-progress`, {
+        method: "PUT",
+        headers: {
+           "Content-Type": "application/json",
+           "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+           assignments,
+           examSchedule
+        })
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update academic progress");
+      }
+      // On success, show a NextUI alert
+      setAlertMessage("Academic progress updated successfully!");
+      setAlertType("success");
+      setAlertVisible(true);
+      setTimeout(() => setAlertVisible(false), 3000);
+    } catch (error) {
+      console.error("Error updating academic progress:", error);
+      setAlertMessage(error.message);
+      setAlertType("error");
+      setAlertVisible(true);
+      setTimeout(() => setAlertVisible(false), 3000);
+    }
+  };
+    
   // -------------------------
   // Document Summarization States
   // -------------------------
@@ -58,7 +93,6 @@ const AcademicProgress = ({ onClose }) => {
 
   const removeExam = (index) =>
     setExamSchedule(examSchedule.filter((_, i) => i !== index));
-
   // -------------------------
   // Document Summarization Functions
   // -------------------------
@@ -142,6 +176,21 @@ const AcademicProgress = ({ onClose }) => {
   
   return (
     <div className="academic-progress h-full w-full p-0 sm:p-6 bg-gray-100 min-h-screen relative">
+      {alertVisible && (
+          <div
+          className={`fixed top-4 right-4 z-[9999] border-l-2 p-2 rounded-lg shadow-lg ${
+            alertType === "success"
+              ? "bg-green-100 border-green-500 text-green-800"
+              : "bg-red-100 border-red-500 text-red-800"
+          }`}
+        >
+          <Alert 
+            title={alertType === "success" ? "Success" : "Error"} 
+            description={alertMessage} 
+          />
+        </div>
+      )}
+
       <header className="flex justify-between items-center bg-blue-400 p-2 rounded mb-6 fixed top-0 w-full z-10">
         <div>
           <h1 className="text-xl font-bold text-black">ACADEMIC PROGRESS</h1>
@@ -156,6 +205,15 @@ const AcademicProgress = ({ onClose }) => {
       >
         Close
       </button>
+
+      <div className="mt-8 flex justify-start items-center space-x-4 px-4">
+        <button 
+          onClick={handleSaveAcademicProgress} 
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
+          Save Academic Progress
+        </button>
+      </div>
 
       {/* Main Content (Assignments, Exams, etc.) */}
       <div className="space-y-8 pt-20">

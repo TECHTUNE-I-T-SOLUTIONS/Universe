@@ -30,6 +30,8 @@ const userSchema = new mongoose.Schema({
   facultyOfStudy: { type: String },
   favoriteCourses: { type: String },
   image: { type: String }, // for profile image (base64 or URL)
+  assignments: { type: Array, default: [] },
+  examSchedule: { type: Array, default: [] },
   createdAt: { type: Date, default: Date.now }
 });
 const User = mongoose.model('User', userSchema);
@@ -167,7 +169,8 @@ app.get('/api/protected', authenticate, (req, res) => {
 // In server.js, add this route to fetch user details
 app.get('/api/user', authenticate, async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select('username email');
+    // Include the image field in the response
+    const user = await User.findById(req.userId).select('username email image nickname phoneNumber department courseOffered facultyOfStudy favoriteCourses');
     if (!user) {
       return res.status(404).json({ message: 'User not found.' });
     }
@@ -199,6 +202,24 @@ app.put('/api/update-profile', authenticate, async (req, res) => {
     res.status(500).json({ message: "Server error.", error: err.message });
   }
 });
+
+app.put('/api/update-academic-progress', authenticate, async (req, res) => {
+  const { assignments, examSchedule } = req.body;
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+    // Update the academic progress fields
+    user.assignments = assignments;
+    user.examSchedule = examSchedule;
+    await user.save();
+    res.json({ message: "Academic progress updated successfully." });
+  } catch (err) {
+    res.status(500).json({ message: "Server error.", error: err.message });
+  }
+});
+
 
 // Start the server
 const PORT = process.env.PORT || 5000;

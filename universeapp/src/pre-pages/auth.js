@@ -22,6 +22,8 @@ import Forgot from "./forgot";
 import Signup from "./signup";
 import Admin from "./Admin";
 import "./auth.css";
+import { FaSpinner } from "react-icons/fa";
+
 
 const Auth = ({ onLoginSuccess = () => {} }) => {
   const [showForgot, setShowForgot] = useState(false);
@@ -32,6 +34,7 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
   const [alertType, setAlertType] = useState("success");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const images = [
     student1, student2, student3, student4, student5, student6,
@@ -56,6 +59,7 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
   // UPDATED handleLogin: Fetch from backend
   const handleLogin = async (email, password) => {
     try {
+      setIsLoading(true); // Start loader
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,13 +74,16 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
       localStorage.setItem("token", data.token);
       showAlert("Login Successful😍! Now, just wait❤️", "success");
       setTimeout(() => {
-        onLoginSuccess(); // Call parent callback to update UI, navigate, etc.
+        onLoginSuccess(); // Callback to update UI or navigate
       }, 1000);
     } catch (error) {
       showAlert(error.message, "error");
+    } finally {
+      setIsLoading(false); // Stop loader in either case
     }
   };
 
+  
   const handleCloseForgot = () => {
     setShowForgot(false); // Return to the login page
   };
@@ -99,6 +106,12 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
       ></div>
       <div className="absolute inset-0 bg-black opacity-70"></div>
       <div className="relative z-10 flex flex-col items-center justify-center p-10 bg-white bg-opacity-20 rounded-lg shadow-lg">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center z-20 bg-black bg-opacity-30">
+            <FaSpinner className="text-blue animate-spin text-4xl" />
+          </div>
+        )}
+  
         {alertVisible && (
           <div
             className={`fixed top-4 right-4 z-[9999] border-l-2 p-2 rounded-lg shadow-lg ${
@@ -110,6 +123,7 @@ const Auth = ({ onLoginSuccess = () => {} }) => {
             <Alert title={alertType === "success" ? "Success" : "Error"} description={alertMessage} />
           </div>
         )}
+        
         <img src={logo} alt="Logo" className="h-16 animate-spin-slow mb-4" />
         <img src={Nametext} alt="UniVerse" className="h-8 opacity-80 mb-6" />
         
