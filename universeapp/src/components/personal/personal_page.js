@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Alert } from "@nextui-org/alert";
 // Import React Icons for edit and save:
 import { FiEdit, FiCheckCircle } from "react-icons/fi";
@@ -29,6 +29,36 @@ const formatDate = () => {
   
     const [showAlert, setShowAlert] = useState(false);
   
+    // Function to load user profile data from the backend
+    const loadProfile = () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        fetch(`${process.env.REACT_APP_API_URL}/api/user`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            // Assuming the backend returns fields: image, nickname, phoneNumber, department, courseOffered, facultyOfStudy, favoriteCourses
+            setImage(data.image || null);
+            setNickname(data.nickname || "");
+            setPhoneNumber(data.phoneNumber || "");
+            setDepartment(data.department || "");
+            setCourseOffered(data.courseOffered || "");
+            setFacultyOfStudy(data.facultyOfStudy || "");
+            setFavoriteCourses(data.favoriteCourses || "");
+          })
+          .catch((err) => console.error("Error fetching profile data:", err));
+      }
+    };
+
+    // Call loadProfile when the component mounts
+    useEffect(() => {
+      loadProfile();
+    }, []);
+
+
     // New: Handler to update profile in the database
     const handleUpdateProfile = async () => {
       // Prepare the payload for update
@@ -41,7 +71,7 @@ const formatDate = () => {
         favoriteCourses,
         image, // This could be a base64 string or URL
       };
-  
+    
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/update-profile`, {
@@ -57,12 +87,14 @@ const formatDate = () => {
           throw new Error(errorData.message || "Profile update failed");
         }
         setShowAlert(true);
+        // Reload profile data after successful update
+        loadProfile();
         setTimeout(() => setShowAlert(false), 3000);
       } catch (error) {
         console.error("Error updating profile:", error);
       }
     };
-  
+      
 
   const toggleEdit = (field) => {
     switch (field) {
