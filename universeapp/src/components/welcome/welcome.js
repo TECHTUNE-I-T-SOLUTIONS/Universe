@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
 import { FiArrowDown } from "react-icons/fi";
+import { FaUserCircle } from "react-icons/fa";
+
 
 // import { useHistory } from "react-router-dom"; // Assuming you're using react-router for navigation
 import logo from "../../icons/UniVerselog.svg";
@@ -22,7 +24,6 @@ import event_calendar from "../../icons/event_calendar.svg";
 import volunteer_opportunities from "../../icons/volunteer_opportunities.svg";
 import social_networking from "../../icons/social_networking.svg";
 import settings from "../../icons/settings.png";
-import profile from "../../icons/profile.png";
 import mental_health_resources from "../../icons/mental_health_resources.svg";
 import physical_health_tracking from "../../icons/physical_health_tracking.svg";
 import goal_setting from "../../icons/goal_setting.svg";
@@ -57,7 +58,9 @@ const Welcome = () => {
   const [showProfilePrompt, setShowProfilePrompt] = useState(() => {
     return localStorage.getItem("profilePromptShown") !== "true";
   });
-   
+  const [profileImage, setProfileImage] = useState("");
+ 
+
   // NEW: State variable for the username
   const [username, setUsername] = useState("");
 
@@ -75,11 +78,14 @@ const Welcome = () => {
           if (data.username) {
             setUsername(data.username);
           }
+          if (data.image) {
+            setProfileImage(data.image);
+          }
         })
         .catch((err) => console.error("Error fetching user details:", err));
     }
   }, []);
-
+  
   // Toggle sidebar open/close
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -351,10 +357,20 @@ const Welcome = () => {
                   title="Settings">
                   <img src={settings} alt="Settings" className="w-full h-full" />
                 </button>
-                <button onClick={openPersonalPage} className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center"
-                title="Profile">
-                  <img src={profile} alt="Profile" className="w-full h-full" />
-
+                <button 
+                  onClick={openPersonalPage} 
+                  className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center"
+                  title="Profile"
+                >
+                  {profileImage ? (
+                    <img
+                      src={profileImage}
+                      alt="Profile"
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  ) : (
+                    <FaUserCircle className="w-full h-full text-gray-500" />
+                  )}
                 </button>
               </div>
             </header>
